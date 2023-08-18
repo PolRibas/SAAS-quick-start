@@ -1,13 +1,10 @@
-// import { PlatformMessages, esEs, enUS } from "@sports-mind/messages";
+import { PlatformMessages, esEs, enUS } from "@saas-quick-start/platform/messages";
 
 export const getTranslations = (locale: string) => {
-  const translations = new Map<string, string>([
-
+  const translations = new Map<string, PlatformMessages>([
+    ['es', esEs],
+    ['en', enUS],
   ]);
-  // const translations = new Map<string, PlatformMessages>([
-  //   ['es', esEs],
-  //   ['en', enUS],
-  // ]);
 
   const translation = translations.get(locale);
 

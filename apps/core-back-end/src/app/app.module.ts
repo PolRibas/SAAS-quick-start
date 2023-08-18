@@ -10,6 +10,7 @@ import { MigrationsModule } from '@saas-quick-start/platform/modules/migrations'
 import { ContextModule } from '@saas-quick-start/platform/context/presentation/nest';
 import { SecurityModule } from '@saas-quick-start/platform/modules/security';
 import { BackOfficeTableModule } from '@saas-quick-start/platform/views/table/presentation/nest';
+import { FrontOfficeCreateCompanyModule } from '@saas-quick-start/platform/views/create-company/presentation/nest';
 
 const MONGO_URI = `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}`;
 
@@ -24,7 +25,8 @@ const MONGO_URI = `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWOR
     SecurityModule,
     MigrationsModule,
     ContextModule,
-    BackOfficeTableModule
+    BackOfficeTableModule,
+    FrontOfficeCreateCompanyModule
   ],
   controllers: [],
   providers: [],

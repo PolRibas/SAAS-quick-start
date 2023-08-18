@@ -2,7 +2,7 @@ import { UserEntityInterface, UserMenuEntityInterface } from '@saas-quick-start/
 import { ContextApi } from '@saas-quick-start/infrastructure/open-api';
 import axios from 'axios';
 
-export class ContextApiBrowserAdapter {
+export class FrontOfficeContextApiBrowserAdapter {
   private contextApi: ContextApi
 
   constructor(
@@ -25,7 +25,6 @@ export class ContextApiBrowserAdapter {
     username,
     password,
   }): Promise<boolean> => {
-    throw new Error('Method not implemented.');
     await this.contextApi.contextControllerCreate({
       firstName,
       lastName,
@@ -38,7 +37,6 @@ export class ContextApiBrowserAdapter {
     return true
   };
 
-
   loginFunction = async (email: string, password: string): Promise<{
     tokens: {
       accessToken: string | null;
@@ -47,7 +45,7 @@ export class ContextApiBrowserAdapter {
     user: UserEntityInterface;
     userMenu: UserMenuEntityInterface[];
   }> => {
-    const response = await this.contextApi.contextControllerAdminLogin({ email, password })
+    const response = await this.contextApi.contextControllerLogin({ email, password })
     const { accessToken, refreshToken, user, userMenu } = response.data;
 
     return {
@@ -66,9 +64,9 @@ export class ContextApiBrowserAdapter {
     accessToken: string;
     userMenu: UserMenuEntityInterface[];
   }> => {
-    const response = await this.contextApi.contextControllerAdminRefreshAccessToken({ refreshToken })
+    const response = await this.contextApi.contextControllerRefreshAccessToken({ refreshToken })
     const { user, accessToken, userMenu } = response.data;
-
+    console.log(response.data)
     return {
       accessToken: accessToken,
       user: {

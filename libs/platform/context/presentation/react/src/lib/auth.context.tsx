@@ -9,11 +9,11 @@ import { useRouter } from 'next/router';
 import { DesignLayout } from './layout';
 import { UserEntityInterface, UserMenuEntityInterface } from '@saas-quick-start/domain/user';
 import { AuthContextType } from '@saas-quick-start/platform/context/presenters';
-import { ContextApiBrowserAdapter } from '@saas-quick-start/platform/context/infrastructure/browser';
+import { ContextApiBrowserAdapter, FrontOfficeContextApiBrowserAdapter } from '@saas-quick-start/platform/context/infrastructure/browser';
 
 export interface AuthProviderProps {
   children: ReactNode;
-  services: ContextApiBrowserAdapter;
+  services: ContextApiBrowserAdapter | FrontOfficeContextApiBrowserAdapter;
   defaultPublicRoute: string;
   defaultPrivateRoute: string;
 }

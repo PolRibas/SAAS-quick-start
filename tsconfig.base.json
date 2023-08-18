@@ -79,6 +79,15 @@
       "@saas-quick-start/platform/modules/security": [
         "libs/platform/modules/security/src/index.ts"
       ],
+      "@saas-quick-start/platform/views/create-company/infrastructure/browser": [
+        "libs/platform/views/create-company/infrastructure/browser/src/index.ts"
+      ],
+      "@saas-quick-start/platform/views/create-company/presentation/nest": [
+        "libs/platform/views/create-company/presentation/nest/src/index.ts"
+      ],
+      "@saas-quick-start/platform/views/create-company/presentation/react": [
+        "libs/platform/views/create-company/presentation/react/src/index.ts"
+      ],
       "@saas-quick-start/platform/views/login/infrastructure/browser": [
         "libs/platform/views/login/infrastructure/browser/src/index.ts"
       ],
@@ -87,6 +96,12 @@
       ],
       "@saas-quick-start/platform/views/login/presenters": [
         "libs/platform/views/login/presenters/src/index.ts"
+      ],
+      "@saas-quick-start/platform/views/register/infrastructure/browser": [
+        "libs/platform/views/register/infrastructure/browser/src/index.ts"
+      ],
+      "@saas-quick-start/platform/views/register/presentation/react": [
+        "libs/platform/views/register/presentation/react/src/index.ts"
       ],
       "@saas-quick-start/platform/views/table/infrastructure/browser": [
         "libs/platform/views/table/infrastructure/browser/src/index.ts"

@@ -208,6 +208,80 @@ export type FindByCriteriaRequestDtoSortOrderEnum = typeof FindByCriteriaRequest
 /**
  * 
  * @export
+ * @interface FrontOfficeCompanyCreateRequestDto
+ */
+export interface FrontOfficeCompanyCreateRequestDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof FrontOfficeCompanyCreateRequestDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FrontOfficeCompanyCreateRequestDto
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FrontOfficeCompanyCreateRequestDto
+     */
+    'address'?: string;
+    /**
+     * The email of the Company
+     * @type {string}
+     * @memberof FrontOfficeCompanyCreateRequestDto
+     */
+    'email'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FrontOfficeCompanyCreateRequestDto
+     */
+    'phoneNumber'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FrontOfficeCompanyCreateRequestDto
+     */
+    'createdAt'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FrontOfficeCompanyCreateRequestDto
+     */
+    'updatedAt'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface FrontOfficeCompanyCreateResponseDto
+ */
+export interface FrontOfficeCompanyCreateResponseDto {
+    /**
+     * 
+     * @type {CompanyEntityDto}
+     * @memberof FrontOfficeCompanyCreateResponseDto
+     */
+    'company': CompanyEntityDto;
+    /**
+     * 
+     * @type {string}
+     * @memberof FrontOfficeCompanyCreateResponseDto
+     */
+    'role': string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof FrontOfficeCompanyCreateResponseDto
+     */
+    'permissions': Array<string>;
+}
+/**
+ * 
+ * @export
  * @interface HealthControllerDefaultHealthCheck200Response
  */
 export interface HealthControllerDefaultHealthCheck200Response {
@@ -1750,6 +1824,117 @@ export class ContextApi extends BaseAPI {
      */
     public contextControllerUpdate(id: string, userUpdateRequestDto: UserUpdateRequestDto, options?: AxiosRequestConfig) {
         return ContextApiFp(this.configuration).contextControllerUpdate(id, userUpdateRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * CreateCompanyApi - axios parameter creator
+ * @export
+ */
+export const CreateCompanyApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Create a company
+         * @param {FrontOfficeCompanyCreateRequestDto} frontOfficeCompanyCreateRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        frontOfficeCreateCompanyControllerCreate: async (frontOfficeCompanyCreateRequestDto: FrontOfficeCompanyCreateRequestDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'frontOfficeCompanyCreateRequestDto' is not null or undefined
+            assertParamExists('frontOfficeCreateCompanyControllerCreate', 'frontOfficeCompanyCreateRequestDto', frontOfficeCompanyCreateRequestDto)
+            const localVarPath = `/create-company`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(frontOfficeCompanyCreateRequestDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * CreateCompanyApi - functional programming interface
+ * @export
+ */
+export const CreateCompanyApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = CreateCompanyApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Create a company
+         * @param {FrontOfficeCompanyCreateRequestDto} frontOfficeCompanyCreateRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async frontOfficeCreateCompanyControllerCreate(frontOfficeCompanyCreateRequestDto: FrontOfficeCompanyCreateRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FrontOfficeCompanyCreateResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.frontOfficeCreateCompanyControllerCreate(frontOfficeCompanyCreateRequestDto, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * CreateCompanyApi - factory interface
+ * @export
+ */
+export const CreateCompanyApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = CreateCompanyApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Create a company
+         * @param {FrontOfficeCompanyCreateRequestDto} frontOfficeCompanyCreateRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        frontOfficeCreateCompanyControllerCreate(frontOfficeCompanyCreateRequestDto: FrontOfficeCompanyCreateRequestDto, options?: any): AxiosPromise<FrontOfficeCompanyCreateResponseDto> {
+            return localVarFp.frontOfficeCreateCompanyControllerCreate(frontOfficeCompanyCreateRequestDto, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * CreateCompanyApi - object-oriented interface
+ * @export
+ * @class CreateCompanyApi
+ * @extends {BaseAPI}
+ */
+export class CreateCompanyApi extends BaseAPI {
+    /**
+     * 
+     * @summary Create a company
+     * @param {FrontOfficeCompanyCreateRequestDto} frontOfficeCompanyCreateRequestDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CreateCompanyApi
+     */
+    public frontOfficeCreateCompanyControllerCreate(frontOfficeCompanyCreateRequestDto: FrontOfficeCompanyCreateRequestDto, options?: AxiosRequestConfig) {
+        return CreateCompanyApiFp(this.configuration).frontOfficeCreateCompanyControllerCreate(frontOfficeCompanyCreateRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

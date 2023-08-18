@@ -894,6 +894,43 @@
           }
         ]
       }
+    },
+    "/create-company": {
+      "post": {
+        "operationId": "FrontOfficeCreateCompanyController_create",
+        "summary": "Create a company",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FrontOfficeCompanyCreateRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The company has been successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrontOfficeCompanyCreateResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "create company"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
     }
   },
   "info": {
@@ -1441,6 +1478,65 @@
         "required": [
           "total",
           "items"
+        ]
+      },
+      "FrontOfficeCompanyCreateRequestDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "example": "company@gmail.com",
+            "description": "The email of the Company",
+            "format": "email",
+            "uniqueItems": true,
+            "minLength": 5,
+            "maxLength": 255
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "FrontOfficeCompanyCreateResponseDto": {
+        "type": "object",
+        "properties": {
+          "company": {
+            "$ref": "#/components/schemas/CompanyEntityDto"
+          },
+          "role": {
+            "type": "string"
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "company",
+          "role",
+          "permissions"
         ]
       }
     }
