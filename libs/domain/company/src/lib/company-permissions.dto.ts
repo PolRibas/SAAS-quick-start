@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CompanyPermissionsEntityDto {
+export class CompanyRoleEntityDto {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

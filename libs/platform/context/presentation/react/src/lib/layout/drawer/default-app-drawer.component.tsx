@@ -12,9 +12,10 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useTheme } from '@mui/material/styles';
 import {
-  IconNames,
   getIconByName,
 } from '@saas-quick-start/platform/design/assets/react';
+import { IconNames } from '@saas-quick-start/platform/design/assets/constants';
+
 // import { Divider } from '@mui/material';
 
 // const SettingsIcon = getIconByName(IconNames.SETTINGS);
@@ -45,7 +46,9 @@ export const DefaultAppDrawer = () => {
         <Toolbar />
         <List sx={{ width: drawerWidth, transition: '0.5s' }}>
           {userMenu.map((item) => {
-            const IconComponent = getIconByName(item.icon as IconNames);
+            const IconComponent = userMenu
+              ? getIconByName(item.icon as IconNames)
+              : null;
             const isActive = item.link && pathname.startsWith(item.link);
             return (
               <ListItem
@@ -66,9 +69,11 @@ export const DefaultAppDrawer = () => {
                 }}
               >
                 <ListItemButton>
-                  <ListItemIcon>
-                    <IconComponent color="secondary" />
-                  </ListItemIcon>
+                  {IconComponent ? (
+                    <ListItemIcon>
+                      <IconComponent color="secondary" />
+                    </ListItemIcon>
+                  ) : null}
                   {isSidebarOpen ? (
                     <ListItemText
                       sx={{

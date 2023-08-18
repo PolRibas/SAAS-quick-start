@@ -1,4 +1,10 @@
-import React, { createContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+  ReactNode,
+} from 'react';
 import {
   defaultContext,
   getStoredTokens,
@@ -7,13 +13,22 @@ import {
 } from './auth.context.constants';
 import { useRouter } from 'next/router';
 import { DesignLayout } from './layout';
-import { UserEntityInterface, UserMenuEntityInterface } from '@saas-quick-start/domain/user';
-import { AuthContextType } from '@saas-quick-start/platform/context/presenters';
-import { ContextApiBrowserAdapter, FrontOfficeContextApiBrowserAdapter } from '@saas-quick-start/platform/context/infrastructure/browser';
+import {
+  UserEntityInterface,
+  UserMenuEntityInterface,
+} from '@saas-quick-start/domain/user';
+import {
+  AuthContextType,
+  ContextCompanyPresenter,
+} from '@saas-quick-start/platform/context/presenters';
+import {
+  ContextApiBrowserAdapter,
+  FrontOfficeContextApiBrowserAdapter,
+} from '@saas-quick-start/platform/context/infrastructure/browser';
 
 export interface AuthProviderProps {
   children: ReactNode;
-  services: ContextApiBrowserAdapter | FrontOfficeContextApiBrowserAdapter;
+  services: FrontOfficeContextApiBrowserAdapter | ContextApiBrowserAdapter;
   defaultPublicRoute: string;
   defaultPrivateRoute: string;
 }
@@ -28,10 +43,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
   defaultPrivateRoute,
 }) => {
   const [user, setUser] = useState<UserEntityInterface | null>(null);
-  // const [companies, setCompanies] = useState<companiesRoles[]>([]);
-  // const [selectedCompany, setSelectedCompany] = useState<
-  //   companiesRoles | undefined
-  // >(undefined);
+  const [companies, setCompanies] = useState<ContextCompanyPresenter[]>([]);
+  const [selectedCompany, setSelectedCompany] =
+    useState<ContextCompanyPresenter | null>(null);
+
   const [userMenu, setUserMenu] = useState<UserMenuEntityInterface[]>([]);
   const { pathname } = useRouter();
 
@@ -50,7 +65,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
     if (storedTokens && storedTokens.refreshToken) {
       return services
         .getMeFunction(storedTokens.refreshToken)
-        .then(({ user, accessToken, userMenu }) => {
+        .then(({ user, accessToken, userMenu, userCompanies }) => {
           if (user) {
             const tokens = {
               accessToken,
@@ -59,13 +74,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
             setUser(user);
             setUserTokens(tokens);
             setStoredTokens(tokens);
-            setUserMenu(userMenu);
-            // if (companies) {
-            //   setCompanies(companies);
-            //   if (companies.length > 0) {
-            //     setSelectedCompany(companies[0]);
-            //   }
-            // }
+            if (userCompanies) {
+              setCompanies(userCompanies);
+              if (userCompanies.length > 0) {
+                setSelectedCompany(userCompanies[0]);
+                setUserMenu(userCompanies[0].menu);
+              }
+            } else {
+              setUserMenu(userMenu);
+            }
           } else {
             setUser(null);
             removeStoredTokens();
@@ -92,18 +109,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
     async (email: string, password: string) => {
       services
         .loginFunction(email, password)
-        .then(({ user, tokens, userMenu }) => {
+        .then(({ user, tokens, userMenu, userCompanies }) => {
           if (user) {
             setUser(user);
             setUserTokens(tokens);
             setStoredTokens(tokens);
-            setUserMenu(userMenu);
-            // if (companies) {
-            //   setCompanies(companies);
-            //   if (companies.length > 0) {
-            //     setSelectedCompany(companies[0]);
-            //   }
-            // }
+            if (userCompanies) {
+              setCompanies(userCompanies);
+              if (userCompanies.length > 0) {
+                setSelectedCompany(userCompanies[0]);
+                setUserMenu(userCompanies[0].menu);
+              }
+            } else {
+              setUserMenu(userMenu);
+            }
           }
         })
         .catch((error) => {
@@ -128,9 +147,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
         userTokens,
         defaultPublicRoute,
         defaultPrivateRoute,
-        // companies,
+        companies,
         getMe,
-        // selectedCompany,
+        selectedCompany,
         registerService: services.register ?? undefined,
       }}
     >

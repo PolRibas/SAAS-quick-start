@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface CompanyPermissionsSchemaInterface extends Document {
+export interface CompanyRoleSchemaInterface extends Document {
   companyId: mongoose.Types.ObjectId;
   name: string;
   permissions: string[];
@@ -8,7 +8,7 @@ export interface CompanyPermissionsSchemaInterface extends Document {
   updatedAt?: Date;
 }
 
-export const companyPermissionsSchema: Schema = new Schema(
+export const companyRoleSchema: Schema = new Schema(
   {
     companyId: { type: mongoose.Types.ObjectId, ref: 'Company', required: true },
     name: { type: String, required: true },
@@ -19,7 +19,7 @@ export const companyPermissionsSchema: Schema = new Schema(
   }
 );
 
-export const CompanyPermissionsModel = mongoose.model<CompanyPermissionsSchemaInterface>(
-  'CompanyPermissions',
-  companyPermissionsSchema,
+export const CompanyRoleModel = mongoose.model<CompanyRoleSchemaInterface>(
+  'CompanyRole',
+  companyRoleSchema,
 );

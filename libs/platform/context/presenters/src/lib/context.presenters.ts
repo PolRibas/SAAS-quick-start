@@ -1,6 +1,14 @@
-import { UserEntityInterface } from "@saas-quick-start/domain/user";
+import { CompanyEntityInterface } from "@saas-quick-start/domain/company";
+import { UserEntityInterface, UserMenuEntityInterface } from "@saas-quick-start/domain/user";
 import { Request } from 'express';
 
+export type UserMenuPresenter = UserMenuEntityInterface
+export interface ContextCompanyPresenter
+  extends CompanyEntityInterface {
+  permissions: string[];
+  role: string;
+  menu: UserMenuPresenter[];
+}
 export interface IStoredTokens {
   accessToken: string | null;
   refreshToken: string | null;
@@ -31,12 +39,7 @@ export interface AuthContextType extends AuthContextBackEndFunctionsType {
   loading: boolean;
   defaultPublicRoute: string;
   defaultPrivateRoute: string;
-  userTokens: IStoredTokens
+  userTokens: IStoredTokens;
+  companies: ContextCompanyPresenter[];
+  selectedCompany: ContextCompanyPresenter | null;
 }
-
-// export interface AuthProviderProps {
-//   children: ReactNode;
-//   services: ApplicationsSheeredAuthServices;
-//   defaultPublicRoute: string;
-//   defaultPrivateRoute: string;
-// }

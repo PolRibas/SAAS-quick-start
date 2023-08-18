@@ -19,8 +19,8 @@ import Settings from '@mui/icons-material/Settings';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import PersonIcon from '@mui/icons-material/Person';
+import { IconNames } from '@saas-quick-start/platform/design/assets/constants';
 
-import { IconNames } from './icons';
 
 export const icons = {
   [IconNames.DEFAULT]: CheckBoxOutlineBlankIcon,

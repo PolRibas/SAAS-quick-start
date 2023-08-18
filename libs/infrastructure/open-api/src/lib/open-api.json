@@ -1153,6 +1153,64 @@
           }
         }
       },
+      "ContextCompanyDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "example": "company@gmail.com",
+            "description": "The email of the Company",
+            "format": "email",
+            "uniqueItems": true,
+            "minLength": 5,
+            "maxLength": 255
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "permissions": {
+            "description": "Permissions of the user for the company",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "role": {
+            "type": "string",
+            "description": "Role of the user in the company"
+          },
+          "menu": {
+            "description": "Role of the user in the company",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MenuDto"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "permissions",
+          "role",
+          "menu"
+        ]
+      },
       "LoginUserResponseDto": {
         "type": "object",
         "properties": {
@@ -1169,6 +1227,12 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MenuDto"
+            }
+          },
+          "userCompanies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContextCompanyDto"
             }
           }
         },
@@ -1205,6 +1269,12 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MenuDto"
+            }
+          },
+          "userCompanies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContextCompanyDto"
             }
           }
         },

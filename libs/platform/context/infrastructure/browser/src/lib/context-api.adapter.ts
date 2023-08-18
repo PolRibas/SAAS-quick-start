@@ -1,5 +1,6 @@
 import { UserEntityInterface, UserMenuEntityInterface } from '@saas-quick-start/domain/user';
 import { ContextApi } from '@saas-quick-start/infrastructure/open-api';
+import { ContextCompanyPresenter } from '@saas-quick-start/platform/context/presenters';
 import axios from 'axios';
 
 export class ContextApiBrowserAdapter {
@@ -46,6 +47,7 @@ export class ContextApiBrowserAdapter {
     };
     user: UserEntityInterface;
     userMenu: UserMenuEntityInterface[];
+    userCompanies?: ContextCompanyPresenter[];
   }> => {
     const response = await this.contextApi.contextControllerAdminLogin({ email, password })
     const { accessToken, refreshToken, user, userMenu } = response.data;
@@ -65,6 +67,7 @@ export class ContextApiBrowserAdapter {
     user: UserEntityInterface;
     accessToken: string;
     userMenu: UserMenuEntityInterface[];
+    userCompanies?: ContextCompanyPresenter[];
   }> => {
     const response = await this.contextApi.contextControllerAdminRefreshAccessToken({ refreshToken })
     const { user, accessToken, userMenu } = response.data;

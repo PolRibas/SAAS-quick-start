@@ -58,6 +58,9 @@
       "@saas-quick-start/platform/context/presenters": [
         "libs/platform/context/presenters/src/index.ts"
       ],
+      "@saas-quick-start/platform/design/assets/constants": [
+        "libs/platform/design/assets/constants/src/index.ts"
+      ],
       "@saas-quick-start/platform/design/assets/react": [
         "libs/platform/design/assets/react/src/index.ts"
       ],

@@ -1,1 +1,1 @@
-export * from './context.services'
+export * from './context.service'

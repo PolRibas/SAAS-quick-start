@@ -106,6 +106,73 @@ export interface CompanyFindByCriteriaResponseDtoClass {
 /**
  * 
  * @export
+ * @interface ContextCompanyDto
+ */
+export interface ContextCompanyDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof ContextCompanyDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ContextCompanyDto
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ContextCompanyDto
+     */
+    'address'?: string;
+    /**
+     * The email of the Company
+     * @type {string}
+     * @memberof ContextCompanyDto
+     */
+    'email'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ContextCompanyDto
+     */
+    'phoneNumber'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ContextCompanyDto
+     */
+    'createdAt'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ContextCompanyDto
+     */
+    'updatedAt'?: string;
+    /**
+     * Permissions of the user for the company
+     * @type {Array<string>}
+     * @memberof ContextCompanyDto
+     */
+    'permissions': Array<string>;
+    /**
+     * Role of the user in the company
+     * @type {string}
+     * @memberof ContextCompanyDto
+     */
+    'role': string;
+    /**
+     * Role of the user in the company
+     * @type {Array<MenuDto>}
+     * @memberof ContextCompanyDto
+     */
+    'menu': Array<MenuDto>;
+}
+/**
+ * 
+ * @export
  * @interface FindByCriteriaFilterConditionDto
  */
 export interface FindByCriteriaFilterConditionDto {
@@ -405,6 +472,12 @@ export interface LoginUserResponseDto {
      * @memberof LoginUserResponseDto
      */
     'userMenu'?: Array<MenuDto>;
+    /**
+     * 
+     * @type {Array<ContextCompanyDto>}
+     * @memberof LoginUserResponseDto
+     */
+    'userCompanies'?: Array<ContextCompanyDto>;
 }
 /**
  * 
@@ -486,6 +559,12 @@ export interface RefreshAccessTokenResponseDto {
      * @memberof RefreshAccessTokenResponseDto
      */
     'userMenu'?: Array<MenuDto>;
+    /**
+     * 
+     * @type {Array<ContextCompanyDto>}
+     * @memberof RefreshAccessTokenResponseDto
+     */
+    'userCompanies'?: Array<ContextCompanyDto>;
 }
 /**
  * 

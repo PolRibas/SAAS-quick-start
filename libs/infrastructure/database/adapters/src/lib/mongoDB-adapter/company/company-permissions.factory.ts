@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { IAbstractMongooseFactory } from '@saas-quick-start/common/abstract/factory';
-import { CompanyPermissionsEntity } from '@saas-quick-start/domain/company';
+import { CompanyRoleEntity } from '@saas-quick-start/domain/company';
 import {
-  CompanyPermissionsSchemaInterface,
-  CompanyPermissionsModel
+  CompanyRoleSchemaInterface,
+  CompanyRoleModel
 } from '@saas-quick-start/infrastructure/database/models';
 
 @Injectable()
-export class CompanyPermissionsFactory
-  implements IAbstractMongooseFactory<CompanyPermissionsEntity, CompanyPermissionsSchemaInterface>
+export class CompanyRoleFactory
+  implements IAbstractMongooseFactory<CompanyRoleEntity, CompanyRoleSchemaInterface>
 {
-  domainToMongoose(domainPermissions: CompanyPermissionsEntity): CompanyPermissionsSchemaInterface {
+  domainToMongoose(domainPermissions: CompanyRoleEntity): CompanyRoleSchemaInterface {
     const { id, companyId, name, permissions, createdAt, updatedAt } = domainPermissions;
-    return new CompanyPermissionsModel({
+    return new CompanyRoleModel({
       _id: id,
       companyId,
       name,
@@ -22,9 +22,9 @@ export class CompanyPermissionsFactory
     });
   }
 
-  mongooseToDomain(mongoosePermissions: CompanyPermissionsSchemaInterface): CompanyPermissionsEntity {
+  mongooseToDomain(mongoosePermissions: CompanyRoleSchemaInterface): CompanyRoleEntity {
     const { _id, companyId, name, permissions, createdAt, updatedAt } = mongoosePermissions;
-    return new CompanyPermissionsEntity({
+    return new CompanyRoleEntity({
       id: _id,
       companyId: companyId.toString(),
       name,

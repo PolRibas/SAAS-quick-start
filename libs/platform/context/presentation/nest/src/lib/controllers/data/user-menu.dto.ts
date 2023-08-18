@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { UserMenuPresenter } from "@saas-quick-start/platform/context/presenters";
 
-export class MenuDto {
+export class MenuDto implements UserMenuPresenter {
   @ApiProperty({ required: false })
   code?: string;
 

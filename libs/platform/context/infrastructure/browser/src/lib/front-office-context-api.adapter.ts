@@ -1,5 +1,6 @@
 import { UserEntityInterface, UserMenuEntityInterface } from '@saas-quick-start/domain/user';
 import { ContextApi } from '@saas-quick-start/infrastructure/open-api';
+import { ContextCompanyPresenter } from '@saas-quick-start/platform/context/presenters';
 import axios from 'axios';
 
 export class FrontOfficeContextApiBrowserAdapter {
@@ -44,9 +45,10 @@ export class FrontOfficeContextApiBrowserAdapter {
     };
     user: UserEntityInterface;
     userMenu: UserMenuEntityInterface[];
+    userCompanies?: ContextCompanyPresenter[];
   }> => {
     const response = await this.contextApi.contextControllerLogin({ email, password })
-    const { accessToken, refreshToken, user, userMenu } = response.data;
+    const { accessToken, refreshToken, user, userMenu, userCompanies } = response.data;
 
     return {
       tokens: { accessToken, refreshToken },
@@ -56,6 +58,11 @@ export class FrontOfficeContextApiBrowserAdapter {
         createdAt: user.createdAt ? new Date(user.createdAt) : undefined,
       },
       userMenu: userMenu || [],
+      userCompanies: userCompanies.map((company) => ({
+        ...company,
+        updatedAt: company.updatedAt ? new Date(company.updatedAt) : undefined,
+        createdAt: company.createdAt ? new Date(company.createdAt) : undefined,
+      })),
     };
   };
 
@@ -63,9 +70,10 @@ export class FrontOfficeContextApiBrowserAdapter {
     user: UserEntityInterface;
     accessToken: string;
     userMenu: UserMenuEntityInterface[];
+    userCompanies?: ContextCompanyPresenter[];
   }> => {
     const response = await this.contextApi.contextControllerRefreshAccessToken({ refreshToken })
-    const { user, accessToken, userMenu } = response.data;
+    const { user, accessToken, userMenu, userCompanies } = response.data;
     console.log(response.data)
     return {
       accessToken: accessToken,
@@ -75,6 +83,11 @@ export class FrontOfficeContextApiBrowserAdapter {
         createdAt: user.createdAt ? new Date(user.createdAt) : undefined,
       },
       userMenu: userMenu || [],
+      userCompanies: userCompanies.map((company) => ({
+        ...company,
+        updatedAt: company.updatedAt ? new Date(company.updatedAt) : undefined,
+        createdAt: company.createdAt ? new Date(company.createdAt) : undefined,
+      })),
     };
   }
 }

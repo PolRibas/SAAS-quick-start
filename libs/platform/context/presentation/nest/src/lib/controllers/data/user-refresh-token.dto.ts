@@ -2,6 +2,7 @@ import { IsNotEmpty, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { MenuDto } from './user-menu.dto';
 import { UserEntityDto } from '@saas-quick-start/domain/user';
+import { ContextCompanyDto } from './company-roles.dto';
 
 export class RefreshAccessTokenRequestDto {
   @ApiProperty({
@@ -25,4 +26,7 @@ export class RefreshAccessTokenResponseDto {
 
   @ApiProperty({ type: MenuDto, isArray: true, required: false })
   userMenu?: MenuDto[];
+
+  @ApiProperty({ type: ContextCompanyDto, isArray: true, required: false })
+  userCompanies?: ContextCompanyDto[];
 }

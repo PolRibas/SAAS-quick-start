@@ -1,4 +1,4 @@
-export interface CompanyPermissionsEntityInterface {
+export interface CompanyRoleEntityInterface {
   id?: string;
   companyId: string;
   name: string;
@@ -7,7 +7,7 @@ export interface CompanyPermissionsEntityInterface {
   updatedAt?: Date;
 }
 
-export class CompanyPermissionsEntity implements CompanyPermissionsEntityInterface {
+export class CompanyRoleEntity implements CompanyRoleEntityInterface {
   public id?: string;
   public companyId: string;
   public name: string;
@@ -15,7 +15,7 @@ export class CompanyPermissionsEntity implements CompanyPermissionsEntityInterfa
   public createdAt?: Date;
   public updatedAt?: Date;
 
-  constructor(params: CompanyPermissionsEntityInterface) {
+  constructor(params: CompanyRoleEntityInterface) {
     this.id = params.id;
     this.companyId = params.companyId;
     this.name = params.name;

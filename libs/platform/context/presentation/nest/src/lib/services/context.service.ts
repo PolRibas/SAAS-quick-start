@@ -10,10 +10,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { AbstractCrudService } from '@saas-quick-start/common/abstract/service';
-import { UserEntity } from '@saas-quick-start/domain/user';
-import { UserSchemaInterface } from '@saas-quick-start/infrastructure/database/models';
-import { UserFactory } from '@saas-quick-start/infrastructure/database/adapters';
+import { UserEntity, UserMenuEntity } from '@saas-quick-start/domain/user';
+import { CompanyRoleSchemaInterface, CompanySchemaInterface, UserCompanyRoleSchemaInterface, UserSchemaInterface } from '@saas-quick-start/infrastructure/database/models';
+import { CompanyFactory, UserFactory } from '@saas-quick-start/infrastructure/database/adapters';
 import { AuthService } from '@saas-quick-start/platform/modules/security';
+import { ContextCompanyPresenter, UserMenuPresenter } from '@saas-quick-start/platform/context/presenters';
+import { messagesMenuCodes } from '@saas-quick-start/platform/messages';
+import { CompanyPermissionsList } from '@saas-quick-start/domain/company';
+import { IconNames } from '@saas-quick-start/platform/design/assets/constants';
+
 
 @Injectable()
 export class ContextServices extends AbstractCrudService<
@@ -23,6 +28,8 @@ export class ContextServices extends AbstractCrudService<
   constructor(
     @InjectModel('User')
     private userModel: Model<UserSchemaInterface>,
+    @InjectModel('UserCompanyRole')
+    private companyUser: Model<UserCompanyRoleSchemaInterface>,
     private readonly authService: AuthService,
   ) {
     super(userModel, new UserFactory());
@@ -36,7 +43,7 @@ export class ContextServices extends AbstractCrudService<
     if (!user.admin) {
       throw new UnauthorizedException();
     }
-    if(!user.password){
+    if (!user.password) {
       throw new UnauthorizedException();
     }
     const correctPassword = await this.checkPassword(
@@ -50,15 +57,16 @@ export class ContextServices extends AbstractCrudService<
       user: this.transformToPlatformUser(user),
       accessToken: await this.authService.createAccessToken(user._id),
       refreshToken: await this.authService.createRefreshToken(req, user._id),
-      // userMenu: this.userMenuService.getUserMenu(user, 'admin')
+      userMenu: this.getUserMenu(user)
     };
   }
 
-  async login(req: Request, loginUserDto: { email: string; password: string }) : Promise<{
+  async login(req: Request, loginUserDto: { email: string; password: string }): Promise<{
     user: UserEntity;
     accessToken: string;
     refreshToken: string;
-}> {
+    userCompanies?: ContextCompanyPresenter[]
+  }> {
     const user = await this.findUserByEmail(loginUserDto.email);
     if (!user || !user.password) {
       throw new BadRequestException('Bad request');
@@ -70,11 +78,12 @@ export class ContextServices extends AbstractCrudService<
     if (!correctPassword) {
       throw new UnauthorizedException();
     }
+    const userCompanies = await this.findUserCompanies(user._id)
     return {
       user: this.transformToPlatformUser(user),
       accessToken: await this.authService.createAccessToken(user._id),
       refreshToken: await this.authService.createRefreshToken(req, user._id),
-      // userMenu: this.userMenuService.getUserMenu(user, 'saas')
+      userCompanies,
     };
   }
 
@@ -86,10 +95,12 @@ export class ContextServices extends AbstractCrudService<
     if (!user) {
       throw new BadRequestException('Bad request');
     }
+    const userCompanies = await this.findUserCompanies(userId)
+
     return {
       user: this.transformToPlatformUser(user),
       accessToken: await this.authService.createAccessToken(user._id),
-      // userMenu: this.userMenuService.getUserMenu(user, 'saas')
+      userCompanies,
     };
   }
 
@@ -108,7 +119,7 @@ export class ContextServices extends AbstractCrudService<
     return {
       user: this.transformToPlatformUser(user),
       accessToken: await this.authService.createAccessToken(user._id),
-      // userMenu: this.userMenuService.getUserMenu(user, 'admin')
+      userMenu: this.getUserMenu(user)
     };
   }
 
@@ -150,7 +161,6 @@ export class ContextServices extends AbstractCrudService<
     return user;
   }
 
-
   private async checkPassword(
     attemptPass: string,
     userPassword: string,
@@ -164,5 +174,79 @@ export class ContextServices extends AbstractCrudService<
       ...domainUser,
       password: undefined,
     }
+  }
+
+  private async findUserCompanies(userId: string): Promise<ContextCompanyPresenter[]> {
+    const userCompanies = await this.companyUser.find({ userId })
+      .populate('companyId').populate('role');
+    const companyFactory = new CompanyFactory()
+    return userCompanies.map((userCompany) => {
+      const domainCompany = companyFactory.mongooseToDomain(userCompany.companyId as unknown as CompanySchemaInterface)
+      const role = (userCompany.role as unknown as CompanyRoleSchemaInterface).name
+      const permissions = (userCompany.role as unknown as CompanyRoleSchemaInterface).permissions
+      return {
+        ...domainCompany,
+        role,
+        permissions,
+        menu: this.getUserCompanyMenu({
+          ...domainCompany,
+          role,
+          permissions,
+          menu: []
+        })
+      }
+    })
+  }
+
+  // Todo Better to move this function to userMenuService
+  private getUserMenu(user: UserSchemaInterface): UserMenuPresenter[] {
+    const menus = [
+      new UserMenuEntity({
+        code: messagesMenuCodes.dashboard,
+        order: 0,
+        link: `/dashboard`,
+        icon: IconNames.DASHBOARD,
+      }),
+      new UserMenuEntity({
+        code: messagesMenuCodes.tables,
+        order: 1,
+        link: `/table`,
+        icon: IconNames.TABLE,
+      }),
+    ]
+    if (user.admin) {
+      menus.push(
+        new UserMenuEntity({
+          code: messagesMenuCodes.user,
+          order: 2,
+          link: `/user`,
+          icon: IconNames.USER,
+        })
+      )
+    }
+    return menus
+  }
+
+  // Todo Better to move this function to userMenuService
+  private getUserCompanyMenu(company: ContextCompanyPresenter): UserMenuPresenter[] {
+    const menus = [
+      new UserMenuEntity({
+        code: messagesMenuCodes.dashboard,
+        order: 0,
+        link: `/dashboard`,
+        icon: IconNames.DASHBOARD,
+      }),
+    ]
+    if (company.permissions.includes(CompanyPermissionsList.readCompanyAnalytics)) {
+      menus.push(
+        new UserMenuEntity({
+          code: messagesMenuCodes.user,
+          order: 1,
+          link: `/analytics`,
+          icon: IconNames.ADMIN,
+        })
+      )
+    }
+    return menus
   }
 }

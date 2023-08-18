@@ -6,9 +6,10 @@ import { LayoutContext } from '../context';
 import { Box } from '@mui/material';
 // import { AuthContext } from '../../auth.context';
 import {
-  IconNames,
   getIconByName,
 } from '@saas-quick-start/platform/design/assets/react';
+import { IconNames } from '@saas-quick-start/platform/design/assets/constants';
+
 
 // const ArrowBackIcon = getIconByName(IconNames.ARROW_BACK);
 const SettingsIcon = getIconByName(IconNames.SETTINGS);
