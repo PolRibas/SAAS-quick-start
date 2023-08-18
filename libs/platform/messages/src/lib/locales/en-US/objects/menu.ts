@@ -1,0 +1,28 @@
+import { MessagesMenu } from "../../../types";
+
+export const menuMessages: MessagesMenu = {
+  'menu-home': 'Home',
+  'menu-about': 'About',
+  'menu-contact': 'Contact',
+  'menu-blog': 'Blog',
+  'menu-faq': 'FAQ',
+  'menu-pricing': 'Pricing',
+  'menu-features': 'Features',
+  'menu-notFound': 'Not Found',
+  'menu-error': 'Error',
+  'menu-comingSoon': 'Coming Soon',
+  'menu-maintenance': 'Maintenance',
+  'menu-underConstruction': 'Under Construction',
+  'menu-search': 'Search',
+  'menu-privacy': 'Privacy',
+  'menu-terms': 'Terms',
+  'menu-dashboard': 'Dashboard',
+  'menu-admin': 'Admin',
+  'menu-settings': 'Settings',
+  'menu-logout': 'Logout',
+  'menu-login': 'Login',
+  'menu-register': 'Register',
+  'menu-profile': 'Profile',
+  'menu-tables': 'Tables',
+  'menu-user': 'User',
+}

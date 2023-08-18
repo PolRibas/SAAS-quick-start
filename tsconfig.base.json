@@ -14,7 +14,93 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@saas-quick-start/common/abstract/controller": [
+        "libs/common/abstract/controller/src/index.ts"
+      ],
+      "@saas-quick-start/common/abstract/factory": [
+        "libs/common/abstract/factory/src/index.ts"
+      ],
+      "@saas-quick-start/common/abstract/security": [
+        "libs/common/abstract/security/src/index.ts"
+      ],
+      "@saas-quick-start/common/abstract/service": [
+        "libs/common/abstract/service/src/index.ts"
+      ],
+      "@saas-quick-start/common/errors": ["libs/common/errors/src/index.ts"],
+      "@saas-quick-start/common/hooks": ["libs/common/hooks/src/index.ts"],
+      "@saas-quick-start/common/permissions": [
+        "libs/common/permissions/src/index.ts"
+      ],
+      "@saas-quick-start/domain/company": ["libs/domain/company/src/index.ts"],
+      "@saas-quick-start/domain/user": ["libs/domain/user/src/index.ts"],
+      "@saas-quick-start/infrastructure/database/adapters": [
+        "libs/infrastructure/database/adapters/src/index.ts"
+      ],
+      "@saas-quick-start/infrastructure/database/models": [
+        "libs/infrastructure/database/models/src/index.ts"
+      ],
+      "@saas-quick-start/infrastructure/migrations": [
+        "libs/infrastructure/migrations/src/index.ts"
+      ],
+      "@saas-quick-start/infrastructure/open-api": [
+        "libs/infrastructure/open-api/src/index.ts"
+      ],
+      "@saas-quick-start/platform/context/infrastructure/browser": [
+        "libs/platform/context/infrastructure/browser/src/index.ts"
+      ],
+      "@saas-quick-start/platform/context/presentation/nest": [
+        "libs/platform/context/presentation/nest/src/index.ts"
+      ],
+      "@saas-quick-start/platform/context/presentation/react": [
+        "libs/platform/context/presentation/react/src/index.ts"
+      ],
+      "@saas-quick-start/platform/context/presenters": [
+        "libs/platform/context/presenters/src/index.ts"
+      ],
+      "@saas-quick-start/platform/design/assets/react": [
+        "libs/platform/design/assets/react/src/index.ts"
+      ],
+      "@saas-quick-start/platform/design/components/dynamic-form": [
+        "libs/platform/design/components/dynamic-form/src/index.ts"
+      ],
+      "@saas-quick-start/platform/design/components/dynamic-table": [
+        "libs/platform/design/components/dynamic-table/src/index.ts"
+      ],
+      "@saas-quick-start/platform/design/theme": [
+        "libs/platform/design/theme/src/index.ts"
+      ],
+      "@saas-quick-start/platform/messages": [
+        "libs/platform/messages/src/index.ts"
+      ],
+      "@saas-quick-start/platform/modules/migrations": [
+        "libs/platform/modules/migrations/src/index.ts"
+      ],
+      "@saas-quick-start/platform/modules/security": [
+        "libs/platform/modules/security/src/index.ts"
+      ],
+      "@saas-quick-start/platform/views/login/infrastructure/browser": [
+        "libs/platform/views/login/infrastructure/browser/src/index.ts"
+      ],
+      "@saas-quick-start/platform/views/login/presentation/react": [
+        "libs/platform/views/login/presentation/react/src/index.ts"
+      ],
+      "@saas-quick-start/platform/views/login/presenters": [
+        "libs/platform/views/login/presenters/src/index.ts"
+      ],
+      "@saas-quick-start/platform/views/table/infrastructure/browser": [
+        "libs/platform/views/table/infrastructure/browser/src/index.ts"
+      ],
+      "@saas-quick-start/platform/views/table/presentation/nest": [
+        "libs/platform/views/table/presentation/nest/src/index.ts"
+      ],
+      "@saas-quick-start/platform/views/table/presentation/react": [
+        "libs/platform/views/table/presentation/react/src/index.ts"
+      ],
+      "@saas-quick-start/platform/views/table/presenters": [
+        "libs/platform/views/table/presenters/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

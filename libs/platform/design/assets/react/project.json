@@ -1,0 +1,18 @@
+{
+  "name": "platform-design-assets-react",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/platform/design/assets/react/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/platform/design/assets/react/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    }
+  }
+}

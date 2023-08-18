@@ -1,0 +1,1448 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "HealthController_defaultHealthCheck",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "The Health Check is successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "info": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      },
+                      "nullable": true
+                    },
+                    "error": {
+                      "type": "object",
+                      "example": {},
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      },
+                      "nullable": true
+                    },
+                    "details": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The Health Check is not successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "info": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      },
+                      "nullable": true
+                    },
+                    "error": {
+                      "type": "object",
+                      "example": {
+                        "redis": {
+                          "status": "down",
+                          "message": "Could not connect"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      },
+                      "nullable": true
+                    },
+                    "details": {
+                      "type": "object",
+                      "example": {
+                        "database": {
+                          "status": "up"
+                        },
+                        "redis": {
+                          "status": "down",
+                          "message": "Could not connect"
+                        }
+                      },
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/migration/execute": {
+      "get": {
+        "operationId": "MigrationController_execute",
+        "summary": "Execute all migrations",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "migration"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/migration/execute/{name}": {
+      "get": {
+        "operationId": "MigrationController_executeByName",
+        "summary": "Execute migration by name/id",
+        "parameters": [
+          {
+            "name": "name",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "migration"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/migration/delete/{name}": {
+      "delete": {
+        "operationId": "MigrationController_deleteByName",
+        "summary": "Delete migration by name/id",
+        "parameters": [
+          {
+            "name": "name",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "migration"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/context": {
+      "post": {
+        "operationId": "ContextController_create",
+        "summary": "Create a user",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The user has been successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserCreateResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "context"
+        ]
+      }
+    },
+    "/context/login": {
+      "post": {
+        "operationId": "ContextController_login",
+        "summary": "Login User",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginUserRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "This user is Logged in.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginUserResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "context"
+        ]
+      }
+    },
+    "/context/admin-login": {
+      "post": {
+        "operationId": "ContextController_adminLogin",
+        "summary": "Login User",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginUserRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "This user is Logged in.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginUserResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "context"
+        ]
+      }
+    },
+    "/context/refresh-access-token": {
+      "post": {
+        "operationId": "ContextController_refreshAccessToken",
+        "summary": "Refresh Access Token with refresh token",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshAccessTokenRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The access token has been successfully refreshed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshAccessTokenResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "context"
+        ]
+      }
+    },
+    "/context/admin-refresh-access-token": {
+      "post": {
+        "operationId": "ContextController_adminRefreshAccessToken",
+        "summary": "Refresh Access Token with refresh token",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshAccessTokenRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The access token has been successfully refreshed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshAccessTokenResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "context"
+        ]
+      }
+    },
+    "/context/{id}": {
+      "put": {
+        "operationId": "ContextController_update",
+        "summary": "Update a user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The user has been successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserUpdateResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found."
+          }
+        },
+        "tags": [
+          "context"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "ContextController_delete",
+        "summary": "Delete a user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The user has been successfully deleted."
+          },
+          "404": {
+            "description": "User not found."
+          }
+        },
+        "tags": [
+          "context"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/company-crud": {
+      "get": {
+        "operationId": "CompanyCrudController_findAll",
+        "summary": "Retrieve all entities",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Entities retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyEntityDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "company-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "CompanyCrudController_create",
+        "summary": "Create a new entity",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyEntityDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Entity created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyEntityDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "company-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/company-crud/{id}": {
+      "get": {
+        "operationId": "CompanyCrudController_findOne",
+        "summary": "Retrieve an entity by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entity retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyEntityDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "company-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "CompanyCrudController_update",
+        "summary": "Update an existing entity",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyEntityDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Entity updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyEntityDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "company-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "CompanyCrudController_delete",
+        "summary": "Delete an entity",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entity deleted successfully"
+          }
+        },
+        "tags": [
+          "company-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/company-crud/find-by-criteria": {
+      "post": {
+        "operationId": "CompanyCrudController_findByCriteria",
+        "summary": "Search entities by criteria",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FindByCriteriaRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Search completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyFindByCriteriaResponseDtoClass"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "company-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/user-crud": {
+      "get": {
+        "operationId": "UserCrudController_findAll",
+        "summary": "Retrieve all entities",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Entities retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserEntityDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "user-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "UserCrudController_create",
+        "summary": "Create a new entity",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserEntityDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Entity created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEntityDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "user-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/user-crud/{id}": {
+      "get": {
+        "operationId": "UserCrudController_findOne",
+        "summary": "Retrieve an entity by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entity retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEntityDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "user-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "UserCrudController_update",
+        "summary": "Update an existing entity",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserEntityDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Entity updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEntityDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "user-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "UserCrudController_delete",
+        "summary": "Delete an entity",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entity deleted successfully"
+          }
+        },
+        "tags": [
+          "user-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/user-crud/find-by-criteria": {
+      "post": {
+        "operationId": "UserCrudController_findByCriteria",
+        "summary": "Search entities by criteria",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FindByCriteriaRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Search completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserFindByCriteriaResponseDtoClass"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "user-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Mary Shelley Api",
+    "description": "Core api for Saas",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      },
+      "portal": {
+        "type": "apiKey",
+        "name": "x-portal",
+        "in": "header"
+      },
+      "front-office": {
+        "type": "apiKey",
+        "name": "x-front-office",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "UserCreateRequestDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "example": "pejman@gmail.com",
+            "description": "The email of the User",
+            "format": "email",
+            "uniqueItems": true,
+            "minLength": 5,
+            "maxLength": 255
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "example": "secret password change me!",
+            "description": "The password of the User",
+            "format": "string",
+            "minLength": 5,
+            "maxLength": 1024
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "UserCreateResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "example": "pejman@gmail.com",
+            "description": "The email of the User",
+            "format": "email",
+            "uniqueItems": true,
+            "minLength": 5,
+            "maxLength": 255
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "example": "secret password change me!",
+            "description": "The password of the User",
+            "format": "string",
+            "minLength": 5,
+            "maxLength": 1024
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "LoginUserRequestDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "pejman@gmail.com",
+            "description": "The email of the User",
+            "format": "email",
+            "uniqueItems": true,
+            "minLength": 5,
+            "maxLength": 255
+          },
+          "password": {
+            "type": "string",
+            "example": "secret password change me!",
+            "description": "The password of the User",
+            "format": "string",
+            "minLength": 5,
+            "maxLength": 1024
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "UserEntityDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "example": "pejman@gmail.com",
+            "description": "The email of the User",
+            "format": "email",
+            "uniqueItems": true,
+            "minLength": 5,
+            "maxLength": 255
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "example": "secret password change me!",
+            "description": "The password of the User",
+            "format": "string",
+            "minLength": 5,
+            "maxLength": 1024
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "MenuDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          },
+          "order": {
+            "type": "number"
+          },
+          "parentId": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginUserResponseDto": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserEntityDto"
+          },
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          },
+          "userMenu": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MenuDto"
+            }
+          }
+        },
+        "required": [
+          "user",
+          "accessToken",
+          "refreshToken"
+        ]
+      },
+      "RefreshAccessTokenRequestDto": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "description": "uuid for refresh token",
+            "format": "uuid",
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "refreshToken"
+        ]
+      },
+      "RefreshAccessTokenResponseDto": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserEntityDto"
+          },
+          "accessToken": {
+            "type": "string"
+          },
+          "userMenu": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MenuDto"
+            }
+          }
+        },
+        "required": [
+          "user",
+          "accessToken"
+        ]
+      },
+      "UserUpdateRequestDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "example": "pejman@gmail.com",
+            "description": "The email of the User",
+            "format": "email",
+            "uniqueItems": true,
+            "minLength": 5,
+            "maxLength": 255
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "example": "secret password change me!",
+            "description": "The password of the User",
+            "format": "string",
+            "minLength": 5,
+            "maxLength": 1024
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "UserUpdateResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "example": "pejman@gmail.com",
+            "description": "The email of the User",
+            "format": "email",
+            "uniqueItems": true,
+            "minLength": 5,
+            "maxLength": 255
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "example": "secret password change me!",
+            "description": "The password of the User",
+            "format": "string",
+            "minLength": 5,
+            "maxLength": 1024
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "CompanyEntityDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "example": "company@gmail.com",
+            "description": "The email of the Company",
+            "format": "email",
+            "uniqueItems": true,
+            "minLength": 5,
+            "maxLength": 255
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "FindByCriteriaFilterConditionDto": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "The key for the condition"
+          },
+          "operation": {
+            "type": "string",
+            "description": "The operation for the condition",
+            "enum": [
+              "$eq",
+              "$cn",
+              "$ne",
+              "$gt",
+              "$gte",
+              "$lt",
+              "$lte",
+              "$in",
+              "$nin",
+              "$exists",
+              "$type",
+              "$mod",
+              "$all",
+              "$size"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value for the condition"
+          }
+        },
+        "required": [
+          "key",
+          "operation",
+          "value"
+        ]
+      },
+      "FindByCriteriaRequestDto": {
+        "type": "object",
+        "properties": {
+          "conditions": {
+            "description": "Array of filter conditions",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FindByCriteriaFilterConditionDto"
+            }
+          },
+          "join": {
+            "type": "string",
+            "description": "Join operation for the conditions",
+            "enum": [
+              "$and",
+              "$or"
+            ]
+          },
+          "sortKey": {
+            "type": "string",
+            "description": "Sort key"
+          },
+          "sortOrder": {
+            "type": "string",
+            "description": "Sort order",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          },
+          "limit": {
+            "type": "number",
+            "description": "Limit for the results"
+          },
+          "page": {
+            "type": "number",
+            "description": "Page for the results"
+          }
+        }
+      },
+      "CompanyFindByCriteriaResponseDtoClass": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number",
+            "description": "Total number of items"
+          },
+          "page": {
+            "type": "number",
+            "description": "Current page of the results"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Limit for the results"
+          },
+          "items": {
+            "description": "Array of resulting items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompanyEntityDto"
+            }
+          }
+        },
+        "required": [
+          "total",
+          "items"
+        ]
+      },
+      "UserFindByCriteriaResponseDtoClass": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number",
+            "description": "Total number of items"
+          },
+          "page": {
+            "type": "number",
+            "description": "Current page of the results"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Limit for the results"
+          },
+          "items": {
+            "description": "Array of resulting items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserEntityDto"
+            }
+          }
+        },
+        "required": [
+          "total",
+          "items"
+        ]
+      }
+    }
+  }
+}
