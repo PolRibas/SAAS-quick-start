@@ -23,4 +23,5 @@ export const messagesMenuCodes = {
   admin: 'menu-admin',
   user: 'menu-user',
   tables: 'menu-tables',
+  companyUsers: 'menu-company-users',
 };

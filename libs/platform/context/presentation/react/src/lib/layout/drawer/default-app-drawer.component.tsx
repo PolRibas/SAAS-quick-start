@@ -1,38 +1,139 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Toolbar from '@mui/material/Toolbar';
-import { LayoutContext } from '../context';
-import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import { useTheme } from '@mui/material/styles';
+import { useTranslations } from 'next-intl';
 import {
-  getIconByName,
-} from '@saas-quick-start/platform/design/assets/react';
+  Box,
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Collapse,
+  useTheme,
+  Divider,
+} from '@mui/material';
+import { getIconByName } from '@saas-quick-start/platform/design/assets/react';
 import { IconNames } from '@saas-quick-start/platform/design/assets/constants';
+import { LayoutContext } from '../context';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 
-// import { Divider } from '@mui/material';
+interface ItemNav {
+  code: string;
+  icon?: string;
+  link?: string;
+  parentId?: string;
+  children?: ItemNav[];
+  exact?: boolean;
+  child?: boolean;
+}
 
-// const SettingsIcon = getIconByName(IconNames.SETTINGS);
-
-export const DefaultAppDrawer = () => {
+export const DefaultAppDrawer: React.FC = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [menuOpen, setMenuOpen] = React.useState<{ [key: string]: boolean }>(
+    {}
+  );
   const { userMenu, drawerWidth, isSidebarOpen } =
     React.useContext(LayoutContext);
   const translation = useTranslations('menu');
   const { push, pathname } = useRouter();
   const theme = useTheme();
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
+
+  const DrawerMenu = React.useMemo(() => {
+    return userMenu.reduce((acc: ItemNav[], item: ItemNav) => {
+      if (item.parentId) {
+        const parent = acc.find((i) => i.code === item.parentId);
+        if (parent) {
+          parent.children = parent.children || [];
+          parent.children.push(item);
+        } else {
+          acc.push({
+            code: item.parentId,
+            children: [item],
+          });
+        }
+      } else {
+        const findItem = acc.find((i) => i.code === item.code);
+        if (findItem) {
+          Object.assign(findItem, item);
+        } else {
+          acc.push(item);
+        }
+      }
+      return acc;
+    }, []);
+  }, [userMenu]);
+
+  const DrawerItem: React.FC<ItemNav> = (item) => {
+    const IconComponent = item.icon
+      ? getIconByName(item.icon as IconNames)
+      : null;
+    const isActive = item.exact
+      ? pathname === item.link
+      : item.link && pathname.startsWith(item.link);
+
+    return (
+      <ListItemButton
+        key={item.code}
+        onClick={() => {
+          if (item.children) {
+            setMenuOpen((prevState) => ({
+              ...prevState,
+              [item.code]: !prevState[item.code],
+            }));
+          } else if (item.link) {
+            push(item.link);
+          }
+        }}
+        sx={{
+          height: '48px',
+          backgroundColor: isActive ? theme.palette.primary.dark : undefined,
+          borderLeft: isActive
+            ? `4px solid ${theme.palette.secondary.main}`
+            : '4px solid transparent',
+          width: drawerWidth,
+          overflow: 'hidden',
+          transition: 'width 0.5s',
+          '&:hover': {
+            backgroundColor: theme.palette.primary.light,
+            width: drawerWidth,
+            overflow: 'hidden',
+            transition: 'width 0.5s',
+          },
+        }}
+      >
+        {IconComponent && (
+          <ListItemIcon>
+            <IconComponent color="secondary" />
+          </ListItemIcon>
+        )}
+        {isSidebarOpen && (
+          <ListItemText
+            sx={{
+              maxWidth: drawerWidth - 50,
+              transition: 'maxWidth 0.5s ease-in-out',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              color: theme.palette.secondary.main,
+            }}
+            primary={translation(item.code)}
+          />
+        )}
+        {isSidebarOpen && item.children ? (
+          menuOpen[item.code] ? (
+            <ExpandLess color="secondary" />
+          ) : (
+            <ExpandMore color="secondary" />
+          )
+        ) : null}
+      </ListItemButton>
+    );
   };
 
-  const drawer = (
+  const drawerContent = (
     <Box
       sx={{
         display: 'flex',
@@ -45,88 +146,24 @@ export const DefaultAppDrawer = () => {
       <div>
         <Toolbar />
         <List sx={{ width: drawerWidth, transition: '0.5s' }}>
-          {userMenu.map((item) => {
-            const IconComponent = userMenu
-              ? getIconByName(item.icon as IconNames)
-              : null;
-            const isActive = item.link && pathname.startsWith(item.link);
-            return (
-              <ListItem
-                key={item.code}
-                disablePadding
-                onClick={() => item.link && push(item.link)}
-                sx={{
-                  height: '48px',
-                  backgroundColor: isActive
-                    ? theme.palette.primary.dark
-                    : undefined,
-                  borderLeft: isActive
-                    ? `4px solid ${theme.palette.secondary.main}}`
-                    : '4px solid transparent',
-                  width: drawerWidth,
-                  overflow: 'hidden',
-                  transition: 'width 0.5s',
-                }}
-              >
-                <ListItemButton>
-                  {IconComponent ? (
-                    <ListItemIcon>
-                      <IconComponent color="secondary" />
-                    </ListItemIcon>
-                  ) : null}
-                  {isSidebarOpen ? (
-                    <ListItemText
-                      sx={{
-                        maxWidth: drawerWidth - 50,
-                        transition: 'maxWidth 0.5s ease-in-out',
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap',
-                        color: theme.palette.secondary.main,
-                      }}
-                      primary={translation(item.code)}
-                    />
-                  ) : null}
-                </ListItemButton>
-              </ListItem>
-            );
-          })}
+          {DrawerMenu.map((item: ItemNav) => (
+            <>
+              {item.children && <Divider color="primary" />}
+
+              <DrawerItem {...item} exact={true} />
+              {item.children && (
+                <Collapse in={menuOpen[item.code]} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {item.children.map((child: ItemNav) => (
+                      <DrawerItem {...child} child />
+                    ))}
+                  </List>
+                </Collapse>
+              )}
+            </>
+          ))}
         </List>
-        {/* <Divider sx={{
-          backgroundColor: theme.palette.secondary.main,
-        }} /> */}
       </div>
-      {/* <div>
-        <Divider />
-        <List sx={{ width: drawerWidth, transition: '0.5s' }}>
-          <ListItem
-            disablePadding
-            sx={{
-              borderLeft: '4px solid transparent',
-              maxWidth: drawerWidth,
-              height: 45,
-              overflow: 'hidden',
-              transition: '0.5s',
-            }}
-          >
-            <ListItemButton>
-              <ListItemIcon>
-                <SettingsIcon />
-              </ListItemIcon>
-              {isSidebarOpen ? (
-                <ListItemText
-                  sx={{
-                    maxWidth: drawerWidth - 50,
-                    transition: 'maxWidth 0.5s ease-in-out',
-                    overflow: 'hidden',
-                    whiteSpace: 'nowrap',
-                  }}
-                  primary={translation('settings')}
-                />
-              ) : null}
-            </ListItemButton>
-          </ListItem>
-        </List>
-      </div> */}
     </Box>
   );
 
@@ -145,9 +182,7 @@ export const DefaultAppDrawer = () => {
         open={mobileOpen}
         onClose={handleDrawerToggle}
         transitionDuration={0.5}
-        ModalProps={{
-          keepMounted: true,
-        }}
+        ModalProps={{ keepMounted: true }}
         sx={{
           display: { xs: 'block', sm: 'none' },
           background: 'blue',
@@ -159,11 +194,10 @@ export const DefaultAppDrawer = () => {
           },
         }}
       >
-        {drawer}
+        {drawerContent}
       </Drawer>
       <Drawer
         variant="permanent"
-        color="primary.main"
         transitionDuration={0.5}
         sx={{
           display: { xs: 'none', sm: 'block' },
@@ -177,7 +211,7 @@ export const DefaultAppDrawer = () => {
         }}
         open
       >
-        {drawer}
+        {drawerContent}
       </Drawer>
     </Box>
   );

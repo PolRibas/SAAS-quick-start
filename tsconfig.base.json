@@ -106,6 +106,21 @@
       "@saas-quick-start/platform/views/register/presentation/react": [
         "libs/platform/views/register/presentation/react/src/index.ts"
       ],
+      "@saas-quick-start/platform/views/settings/account/presenters": [
+        "libs/platform/views/settings/account/presenters/src/index.ts"
+      ],
+      "@saas-quick-start/platform/views/settings/company-users/infrastructure/browser": [
+        "libs/platform/views/settings/company-users/infrastructure/browser/src/index.ts"
+      ],
+      "@saas-quick-start/platform/views/settings/company-users/presentation/nest": [
+        "libs/platform/views/settings/company-users/presentation/nest/src/index.ts"
+      ],
+      "@saas-quick-start/platform/views/settings/company-users/presentation/react": [
+        "libs/platform/views/settings/company-users/presentation/react/src/index.ts"
+      ],
+      "@saas-quick-start/platform/views/settings/company-users/presenters": [
+        "libs/platform/views/settings/company-users/presenters/src/index.ts"
+      ],
       "@saas-quick-start/platform/views/table/infrastructure/browser": [
         "libs/platform/views/table/infrastructure/browser/src/index.ts"
       ],

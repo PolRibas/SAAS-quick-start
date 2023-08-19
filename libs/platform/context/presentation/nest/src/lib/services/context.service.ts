@@ -236,14 +236,21 @@ export class ContextServices extends AbstractCrudService<
         link: `/dashboard`,
         icon: IconNames.DASHBOARD,
       }),
+      new UserMenuEntity({
+        code: messagesMenuCodes.settings,
+        order: 0,
+        link: `/settings`,
+        icon: IconNames.SETTINGS,
+      }),
     ]
     if (company.permissions.includes(CompanyPermissionsList.readCompanyAnalytics)) {
       menus.push(
         new UserMenuEntity({
-          code: messagesMenuCodes.user,
+          code: messagesMenuCodes.companyUsers,
           order: 1,
-          link: `/analytics`,
-          icon: IconNames.ADMIN,
+          link: `/settings/company-users`,
+          icon: IconNames.USER,
+          parentId: messagesMenuCodes.settings
         })
       )
     }

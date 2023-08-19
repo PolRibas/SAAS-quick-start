@@ -23,4 +23,5 @@ export interface MessagesMenu {
   'menu-admin': string;
   'menu-user': string;
   'menu-tables': string;
+  'menu-company-users': string;
 }

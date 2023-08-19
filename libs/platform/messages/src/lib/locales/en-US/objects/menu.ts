@@ -25,4 +25,5 @@ export const menuMessages: MessagesMenu = {
   'menu-profile': 'Profile',
   'menu-tables': 'Tables',
   'menu-user': 'User',
+  'menu-company-users': 'Company Users',
 }
