@@ -11,7 +11,6 @@ import {
   Toolbar,
   Collapse,
   useTheme,
-  Divider,
 } from '@mui/material';
 import { getIconByName } from '@saas-quick-start/platform/design/assets/react';
 import { IconNames } from '@saas-quick-start/platform/design/assets/constants';
@@ -146,21 +145,19 @@ export const DefaultAppDrawer: React.FC = () => {
       <div>
         <Toolbar />
         <List sx={{ width: drawerWidth, transition: '0.5s' }}>
-          {DrawerMenu.map((item: ItemNav) => (
-            <>
-              {item.children && <Divider color="primary" />}
-
-              <DrawerItem {...item} exact={true} />
+          {DrawerMenu.map((item: ItemNav, index: number) => (
+            <React.Fragment key={`${item.code}_drawer_${index}`}>
+              <DrawerItem {...item} exact={true} key={item.code + 'drawer' + index} />
               {item.children && (
-                <Collapse in={menuOpen[item.code]} timeout="auto" unmountOnExit>
+                <Collapse key={item.code + 'collapse'  + index} in={menuOpen[item.code]} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
-                    {item.children.map((child: ItemNav) => (
-                      <DrawerItem {...child} child />
+                    {item.children.map((child: ItemNav, i: number) => (
+                      <DrawerItem key={child.code + 'child-drawer' + index + `${i}`} {...child} child />
                     ))}
                   </List>
                 </Collapse>
               )}
-            </>
+            </React.Fragment>
           ))}
         </List>
       </div>

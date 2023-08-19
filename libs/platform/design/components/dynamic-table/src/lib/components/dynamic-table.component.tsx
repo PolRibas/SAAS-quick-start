@@ -21,6 +21,7 @@ export const DynamicTableComponent: React.FC = () => {
     sort,
     setSelectedRow,
     selectedRow,
+    fullConfig
   } = useDataTableContext();
   const [loadingState, setLoadingState] = useState(false);
   const loadingRef = useRef(loading);
@@ -77,10 +78,10 @@ export const DynamicTableComponent: React.FC = () => {
           {tableData.map((row, i) => (
             <TableRow
               key={`${row.field}_item_${i}`}
-              onClick={() => setSelectedRow(i)}
+              onClick={() => fullConfig.findByIdFunction ? setSelectedRow(i) : null}
               selected={i === selectedRow}
               sx={{
-                cursor: 'pointer',
+                cursor: fullConfig.findByIdFunction ? 'pointer' : 'default',
               }}
             >
               {filteredHeaders.map((item, index) => {

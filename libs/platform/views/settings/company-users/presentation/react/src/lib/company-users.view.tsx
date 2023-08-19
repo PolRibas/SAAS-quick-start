@@ -1,5 +1,6 @@
 import { Card, Tabs, Tab, Box, CardHeader, Typography } from '@mui/material';
 import { AuthContext } from '@saas-quick-start/platform/context/presentation/react';
+import { ContextCompanyPresenter } from '@saas-quick-start/platform/context/presenters';
 import { DynamicTable } from '@saas-quick-start/platform/design/components/dynamic-table';
 import {
   getCompanyRolesDataBase,
@@ -12,15 +13,17 @@ import { FC, SyntheticEvent, useContext, useMemo, useState } from 'react';
 export const CompanyUsersView: FC<{ baseUrl: string }> = (props) => {
   const router = useRouter();
   const { selectedCompany } = useContext(AuthContext);
+
+
   const [currentTab, setCurrentTab] = useState(router.query.tab || 'users');
   const t = useTranslations('settings');
 
   const companyUserTable = useMemo(() => {
-    return getCompanyUsersDataBase(selectedCompany);
+    return getCompanyUsersDataBase(selectedCompany as ContextCompanyPresenter);
   }, [selectedCompany]);
 
   const companyRolesTable = useMemo(() => {
-    return getCompanyRolesDataBase(selectedCompany);
+    return getCompanyRolesDataBase(selectedCompany as ContextCompanyPresenter);
   }, [selectedCompany]);
 
   const handleChange = (_: SyntheticEvent<Element, Event>, value: string) => {

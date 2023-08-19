@@ -1,7 +1,9 @@
 
-import { CompanyUserCrudApi, UserFindByCriteriaResponseDtoClass } from '@saas-quick-start/infrastructure/open-api';
+import { CompanyUserCrudApi, UserCompanyRolePresenterDto, UserFindByCriteriaResponseDtoClass } from '@saas-quick-start/infrastructure/open-api';
+import { ContextCompanyPresenter } from '@saas-quick-start/platform/context/presenters';
 import { DynamicFormApiParams, DynamicFormFormTypeEnum } from '@saas-quick-start/platform/design/components/dynamic-form';
 import { DynamicTableColumnInterface, DynamicTableInterface, DynamicTableItemInterface } from '@saas-quick-start/platform/design/components/dynamic-table';
+import { CompanyUsersPresenter } from '@saas-quick-start/platform/views/settings/company-users/presenters';
 import { FindByCriteriaPresenterOperationEnum, FindByCriteriaPresenterRequest, FindByCriteriaPresenterResponse } from '@saas-quick-start/platform/views/table/presenters';
 import { AxiosResponse } from 'axios';
 
@@ -59,6 +61,7 @@ const CompanyUsersAttributes: DynamicTableColumnInterface[] = [
     label: 'label-username',
     field: 'username',
     sortable: false,
+    disabled: true,
     type: DynamicFormFormTypeEnum.string,
     defaultValue: '',
     hiddenHeader: true,
@@ -69,6 +72,7 @@ const CompanyUsersAttributes: DynamicTableColumnInterface[] = [
     label: 'label-first-name',
     field: 'firstName',
     sortable: false,
+    disabled: true,
     type: DynamicFormFormTypeEnum.string,
     defaultValue: '',
     value: '',
@@ -79,6 +83,7 @@ const CompanyUsersAttributes: DynamicTableColumnInterface[] = [
     id: 'last-name',
     label: 'label-last-name',
     field: 'lastName',
+    disabled: true,
     sortable: false,
     type: DynamicFormFormTypeEnum.string,
     defaultValue: '',
@@ -91,6 +96,7 @@ const CompanyUsersAttributes: DynamicTableColumnInterface[] = [
     label: 'label-phone',
     defaultValue: '',
     field: 'phoneNumber',
+    disabled: true,
     value: '',
     placeholder: '+343943...',
     notRequired: false,
@@ -108,13 +114,29 @@ const CompanyUsersAttributes: DynamicTableColumnInterface[] = [
   },
 ];
 
-export const getCompanyUsersDataBase = (selectedCompany): DynamicTableInterface => ({
+export const getCompanyUsersDataBase = (selectedCompany: ContextCompanyPresenter): DynamicTableInterface => ({
   title: 'company-user',
   subtitle: 'table-company-user-subtitle',
   itemTitle: (item: DynamicTableItemInterface) => `@${item['username']}`,
   itemSubtitle: (item: DynamicTableItemInterface) => `${item['email']}`,
   columns: CompanyUsersAttributes,
   filters: undefined,
+  canDelete: selectedCompany.permissions?.includes('delete-company-user') ||  selectedCompany.permissions?.includes('root-permission'),
+  canUpdate: selectedCompany.permissions?.includes('update-company-user') ||  selectedCompany.permissions?.includes('root-permission'),
+  canCreate: selectedCompany.permissions?.includes('create-company-user') ||  selectedCompany.permissions?.includes('root-permission'),
+  findByIdFunction: async (apiParams: DynamicFormApiParams, id: string) => {
+    const result = await getUserApi(apiParams).companyUserControllerFindOne(id);
+    return result as unknown as AxiosResponse<DynamicTableItemInterface>;
+  },
+  deleteFunction: async (apiParams: DynamicFormApiParams, id: string) => {
+    const result = await getUserApi(apiParams).companyUserControllerDelete(id);
+    return result as unknown as AxiosResponse<void>;
+  },
+  updateFunction: async (apiParams: DynamicFormApiParams, item: DynamicTableItemInterface) => {
+    const result = await getUserApi(apiParams).companyUserControllerUpdate(
+      (item as unknown as CompanyUsersPresenter).id || '', item as unknown as UserCompanyRolePresenterDto);
+    return result as unknown as AxiosResponse<DynamicTableItemInterface>;
+  },
   findByCriteriaFunction: async (apiParams: DynamicFormApiParams, criteria: FindByCriteriaPresenterRequest) => {
     try {
       criteria.conditions = criteria.conditions || [];

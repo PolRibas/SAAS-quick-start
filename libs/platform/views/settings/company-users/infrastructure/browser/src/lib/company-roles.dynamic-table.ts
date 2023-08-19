@@ -1,7 +1,8 @@
 
-import { CompanyRoleCrudApi, UserFindByCriteriaResponseDtoClass } from '@saas-quick-start/infrastructure/open-api';
+import { CompanyRoleCrudApi, CompanyUsersDto, UserFindByCriteriaResponseDtoClass } from '@saas-quick-start/infrastructure/open-api';
 import { DynamicFormApiParams, DynamicFormFormTypeEnum } from '@saas-quick-start/platform/design/components/dynamic-form';
 import { DynamicTableColumnInterface, DynamicTableInterface, DynamicTableItemInterface } from '@saas-quick-start/platform/design/components/dynamic-table';
+import { CompanyRolePresenter } from '@saas-quick-start/platform/views/settings/company-users/presenters';
 import { FindByCriteriaPresenterOperationEnum, FindByCriteriaPresenterRequest, FindByCriteriaPresenterResponse } from '@saas-quick-start/platform/views/table/presenters';
 import { AxiosResponse } from 'axios';
 
@@ -55,10 +56,26 @@ export const getCompanyRolesDataBase = (selectedCompany): DynamicTableInterface 
   itemTitle: (item: DynamicTableItemInterface) => `${item['name']}`,
   itemSubtitle: (item: DynamicTableItemInterface) => `${item['name']}`,
   columns: CompanyRolesAttributes,
+  canDelete: selectedCompany.permissions?.includes('delete-company-role') ||  selectedCompany.permissions?.includes('root-permission'),
+  canUpdate: selectedCompany.permissions?.includes('update-company-role') ||  selectedCompany.permissions?.includes('root-permission'),
+  canCreate: selectedCompany.permissions?.includes('create-company-role') ||  selectedCompany.permissions?.includes('root-permission'),
   filters: [{
     type: 'text',
     key: 'name',
   }],
+  deleteFunction: async (apiParams: DynamicFormApiParams, id: string) => {
+    const result = await getCompanyRolesApi(apiParams).companyRoleCrudControllerDelete(id);
+    return result as unknown as AxiosResponse<void>;
+  },
+  updateFunction: async (apiParams: DynamicFormApiParams, item: DynamicTableItemInterface) => {
+    const result = await getCompanyRolesApi(apiParams).companyRoleCrudControllerUpdate(
+      (item as unknown as CompanyRolePresenter).id || '', item as unknown as CompanyUsersDto);
+    return result as unknown as AxiosResponse<DynamicTableItemInterface>;
+  },
+  findByIdFunction: async (apiParams: DynamicFormApiParams, id: string) => {
+    const result = await getCompanyRolesApi(apiParams).companyRoleCrudControllerFindOne(id);
+    return result as unknown as AxiosResponse<DynamicTableItemInterface>;
+  },
   findByCriteriaFunction: async (apiParams: DynamicFormApiParams, criteria: FindByCriteriaPresenterRequest) => {
     try {
       criteria.conditions = criteria.conditions || [];

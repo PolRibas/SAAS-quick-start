@@ -96,6 +96,7 @@ export const DynamicTableItemComponent: React.FC = () => {
   const handlerDelete = async () => {
     setPendingToDelete(true);
   };
+
   const handlerSubmit = async (form: { [key: string]: unknown }) => {
     Object.keys(selectedData).forEach((key) => {
       if (form[key] !== undefined) {
