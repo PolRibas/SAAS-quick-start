@@ -180,7 +180,7 @@ export class ContextServices extends AbstractCrudService<
     const userCompanies = await this.companyUser.find({ userId })
       .populate('companyId').populate('role');
     const companyFactory = new CompanyFactory()
-    return userCompanies.map((userCompany) => {
+    return await Promise.all(userCompanies.map(async (userCompany) => {
       const domainCompany = companyFactory.mongooseToDomain(userCompany.companyId as unknown as CompanySchemaInterface)
       const role = (userCompany.role as unknown as CompanyRoleSchemaInterface).name
       const permissions = (userCompany.role as unknown as CompanyRoleSchemaInterface).permissions
@@ -188,6 +188,7 @@ export class ContextServices extends AbstractCrudService<
         ...domainCompany,
         role,
         permissions,
+        accessToken: await this.authService.createCompanyAccessToken(userId, domainCompany.id),
         menu: this.getUserCompanyMenu({
           ...domainCompany,
           role,
@@ -195,7 +196,7 @@ export class ContextServices extends AbstractCrudService<
           menu: []
         })
       }
-    })
+    }))
   }
 
   // Todo Better to move this function to userMenuService

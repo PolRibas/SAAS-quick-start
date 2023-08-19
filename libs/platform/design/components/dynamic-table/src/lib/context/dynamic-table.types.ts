@@ -52,4 +52,5 @@ export interface DataTableCacheItem {
   } | undefined;
   result: FindByCriteriaPresenterResponse<DynamicTableItemInterface>
   conditions: FindByCriteriaPresenterFilterCondition[] | undefined
+  title: string
 }

@@ -1,4 +1,5 @@
 import {
+  ForbiddenException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -9,7 +10,7 @@ import { Request } from 'express';
 import { v4 } from 'uuid';
 import { getClientIp } from 'request-ip';
 import { JwtPayload } from './jwt.strategy';
-import { RefreshToken, UserSchemaInterface } from '@saas-quick-start/infrastructure/database/models';
+import { RefreshToken, UserCompanyRoleSchemaInterface, UserSchemaInterface } from '@saas-quick-start/infrastructure/database/models';
 
 @Injectable()
 export class AuthService {
@@ -18,10 +19,19 @@ export class AuthService {
     private readonly refreshTokenModel: Model<RefreshToken>,
     @InjectModel('User')
     private userModel: Model<UserSchemaInterface>,
+    @InjectModel('UserCompanyRole')
+    private userCompanyRoleModel: Model<UserCompanyRoleSchemaInterface>,
   ) { }
 
   async createAccessToken(userId: string) {
     const accessToken = sign({ userId }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRATION,
+    });
+    return this.encryptText(accessToken);
+  }
+
+  async createCompanyAccessToken(userId: string, companyId?: string) {
+    const accessToken = sign({ userId, companyId }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRATION,
     });
     return this.encryptText(accessToken);
@@ -57,8 +67,24 @@ export class AuthService {
     return user;
   }
 
+  async validateCompany(jwtPayload: JwtPayload): Promise<{
+    user: UserSchemaInterface;
+    companyUser: UserCompanyRoleSchemaInterface;
+  }> {
+    const user = await this.userModel.findById(jwtPayload.userId);
+    const companyRoles = await this.userCompanyRoleModel.find(
+      { companyId: jwtPayload.companyId, userId: jwtPayload.userId }
+    ).populate('role');
+    if (!user || !companyRoles) {
+      throw new ForbiddenException();
+    }
+    return {
+      user,
+      companyUser: companyRoles.find(role => role.companyId.toString() === jwtPayload.companyId)
+    };
+  }
+
   private jwtExtractor(request: Request): Promise<string> {
-    // TODO lo primero que hace es buscar el token en el header !!! TODO implement for company
     let token = null;
     if (request.header('x-token')) {
       token = request.get('x-token');
@@ -93,6 +119,7 @@ export class AuthService {
   getIp(req: Request): string {
     return getClientIp(req);
   }
+
 
   getBrowserInfo(req: Request): string {
     return req.header['user-agent'] || 'XX';

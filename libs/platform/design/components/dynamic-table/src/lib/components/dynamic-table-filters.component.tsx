@@ -61,7 +61,6 @@ export const DynamicTableFiltersComponent: React.FC = () => {
 
   useEffect(() => {
     if (router.query.search && router.query.search !== filterValue) {
-      console.log('search', router.query.search)
       setFilterValue(router.query.search as string);
       handleSearch(router.query.search as string);
     }

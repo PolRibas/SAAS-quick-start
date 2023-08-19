@@ -106,6 +106,49 @@ export interface CompanyFindByCriteriaResponseDtoClass {
 /**
  * 
  * @export
+ * @interface CompanyUsersDto
+ */
+export interface CompanyUsersDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof CompanyUsersDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CompanyUsersDto
+     */
+    'companyId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CompanyUsersDto
+     */
+    'name': string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof CompanyUsersDto
+     */
+    'permissions': Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof CompanyUsersDto
+     */
+    'createdAt'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CompanyUsersDto
+     */
+    'updatedAt'?: string;
+}
+/**
+ * 
+ * @export
  * @interface ContextCompanyDto
  */
 export interface ContextCompanyDto {
@@ -169,6 +212,37 @@ export interface ContextCompanyDto {
      * @memberof ContextCompanyDto
      */
     'menu': Array<MenuDto>;
+}
+/**
+ * 
+ * @export
+ * @interface FindByCriteriaCompanyUsersDto
+ */
+export interface FindByCriteriaCompanyUsersDto {
+    /**
+     * Total number of items
+     * @type {number}
+     * @memberof FindByCriteriaCompanyUsersDto
+     */
+    'total': number;
+    /**
+     * Current page of the results
+     * @type {number}
+     * @memberof FindByCriteriaCompanyUsersDto
+     */
+    'page'?: number;
+    /**
+     * Limit for the results
+     * @type {number}
+     * @memberof FindByCriteriaCompanyUsersDto
+     */
+    'limit'?: number;
+    /**
+     * Array of resulting items
+     * @type {Array<CompanyUsersDto>}
+     * @memberof FindByCriteriaCompanyUsersDto
+     */
+    'items': Array<CompanyUsersDto>;
 }
 /**
  * 
@@ -272,6 +346,37 @@ export const FindByCriteriaRequestDtoSortOrderEnum = {
 
 export type FindByCriteriaRequestDtoSortOrderEnum = typeof FindByCriteriaRequestDtoSortOrderEnum[keyof typeof FindByCriteriaRequestDtoSortOrderEnum];
 
+/**
+ * 
+ * @export
+ * @interface FindByCriteriaUserCompanyRolePresenterDto
+ */
+export interface FindByCriteriaUserCompanyRolePresenterDto {
+    /**
+     * Total number of items
+     * @type {number}
+     * @memberof FindByCriteriaUserCompanyRolePresenterDto
+     */
+    'total': number;
+    /**
+     * Current page of the results
+     * @type {number}
+     * @memberof FindByCriteriaUserCompanyRolePresenterDto
+     */
+    'page'?: number;
+    /**
+     * Limit for the results
+     * @type {number}
+     * @memberof FindByCriteriaUserCompanyRolePresenterDto
+     */
+    'limit'?: number;
+    /**
+     * Array of resulting items
+     * @type {Array<UserCompanyRolePresenterDto>}
+     * @memberof FindByCriteriaUserCompanyRolePresenterDto
+     */
+    'items': Array<UserCompanyRolePresenterDto>;
+}
 /**
  * 
  * @export
@@ -565,6 +670,79 @@ export interface RefreshAccessTokenResponseDto {
      * @memberof RefreshAccessTokenResponseDto
      */
     'userCompanies'?: Array<ContextCompanyDto>;
+}
+/**
+ * 
+ * @export
+ * @interface UserCompanyRolePresenterDto
+ */
+export interface UserCompanyRolePresenterDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCompanyRolePresenterDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCompanyRolePresenterDto
+     */
+    'userId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCompanyRolePresenterDto
+     */
+    'companyId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCompanyRolePresenterDto
+     */
+    'role': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCompanyRolePresenterDto
+     */
+    'createdAt'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCompanyRolePresenterDto
+     */
+    'updatedAt'?: string;
+    /**
+     * 
+     * @type {CompanyEntityDto}
+     * @memberof UserCompanyRolePresenterDto
+     */
+    'company'?: CompanyEntityDto;
+    /**
+     * User email
+     * @type {string}
+     * @memberof UserCompanyRolePresenterDto
+     */
+    'email': string;
+    /**
+     * user First Name
+     * @type {string}
+     * @memberof UserCompanyRolePresenterDto
+     */
+    'firstName': string;
+    /**
+     * user Last Name
+     * @type {string}
+     * @memberof UserCompanyRolePresenterDto
+     */
+    'lastName': string;
+    /**
+     * user username
+     * @type {string}
+     * @memberof UserCompanyRolePresenterDto
+     */
+    'username': string;
 }
 /**
  * 
@@ -1369,6 +1547,946 @@ export class CompanyCrudApi extends BaseAPI {
      */
     public companyCrudControllerUpdate(id: string, companyEntityDto: CompanyEntityDto, options?: AxiosRequestConfig) {
         return CompanyCrudApiFp(this.configuration).companyCrudControllerUpdate(id, companyEntityDto, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * CompanyRoleCrudApi - axios parameter creator
+ * @export
+ */
+export const CompanyRoleCrudApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Create a new entity
+         * @param {CompanyUsersDto} companyUsersDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyRoleCrudControllerCreate: async (companyUsersDto: CompanyUsersDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'companyUsersDto' is not null or undefined
+            assertParamExists('companyRoleCrudControllerCreate', 'companyUsersDto', companyUsersDto)
+            const localVarPath = `/company-role-crud`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(companyUsersDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Delete an entity
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyRoleCrudControllerDelete: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('companyRoleCrudControllerDelete', 'id', id)
+            const localVarPath = `/company-role-crud/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Retrieve all entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyRoleCrudControllerFindAll: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/company-role-crud`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Search entities by criteria
+         * @param {FindByCriteriaRequestDto} findByCriteriaRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyRoleCrudControllerFindByCriteria: async (findByCriteriaRequestDto: FindByCriteriaRequestDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'findByCriteriaRequestDto' is not null or undefined
+            assertParamExists('companyRoleCrudControllerFindByCriteria', 'findByCriteriaRequestDto', findByCriteriaRequestDto)
+            const localVarPath = `/company-role-crud/find-by-criteria`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(findByCriteriaRequestDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Retrieve an entity by its ID
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyRoleCrudControllerFindOne: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('companyRoleCrudControllerFindOne', 'id', id)
+            const localVarPath = `/company-role-crud/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update an existing entity
+         * @param {string} id 
+         * @param {CompanyUsersDto} companyUsersDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyRoleCrudControllerUpdate: async (id: string, companyUsersDto: CompanyUsersDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('companyRoleCrudControllerUpdate', 'id', id)
+            // verify required parameter 'companyUsersDto' is not null or undefined
+            assertParamExists('companyRoleCrudControllerUpdate', 'companyUsersDto', companyUsersDto)
+            const localVarPath = `/company-role-crud/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(companyUsersDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * CompanyRoleCrudApi - functional programming interface
+ * @export
+ */
+export const CompanyRoleCrudApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = CompanyRoleCrudApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Create a new entity
+         * @param {CompanyUsersDto} companyUsersDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async companyRoleCrudControllerCreate(companyUsersDto: CompanyUsersDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CompanyUsersDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.companyRoleCrudControllerCreate(companyUsersDto, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Delete an entity
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async companyRoleCrudControllerDelete(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.companyRoleCrudControllerDelete(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Retrieve all entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async companyRoleCrudControllerFindAll(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CompanyUsersDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.companyRoleCrudControllerFindAll(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Search entities by criteria
+         * @param {FindByCriteriaRequestDto} findByCriteriaRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async companyRoleCrudControllerFindByCriteria(findByCriteriaRequestDto: FindByCriteriaRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FindByCriteriaCompanyUsersDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.companyRoleCrudControllerFindByCriteria(findByCriteriaRequestDto, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Retrieve an entity by its ID
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async companyRoleCrudControllerFindOne(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CompanyUsersDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.companyRoleCrudControllerFindOne(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Update an existing entity
+         * @param {string} id 
+         * @param {CompanyUsersDto} companyUsersDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async companyRoleCrudControllerUpdate(id: string, companyUsersDto: CompanyUsersDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CompanyUsersDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.companyRoleCrudControllerUpdate(id, companyUsersDto, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * CompanyRoleCrudApi - factory interface
+ * @export
+ */
+export const CompanyRoleCrudApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = CompanyRoleCrudApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Create a new entity
+         * @param {CompanyUsersDto} companyUsersDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyRoleCrudControllerCreate(companyUsersDto: CompanyUsersDto, options?: any): AxiosPromise<CompanyUsersDto> {
+            return localVarFp.companyRoleCrudControllerCreate(companyUsersDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Delete an entity
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyRoleCrudControllerDelete(id: string, options?: any): AxiosPromise<void> {
+            return localVarFp.companyRoleCrudControllerDelete(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Retrieve all entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyRoleCrudControllerFindAll(options?: any): AxiosPromise<Array<CompanyUsersDto>> {
+            return localVarFp.companyRoleCrudControllerFindAll(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Search entities by criteria
+         * @param {FindByCriteriaRequestDto} findByCriteriaRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyRoleCrudControllerFindByCriteria(findByCriteriaRequestDto: FindByCriteriaRequestDto, options?: any): AxiosPromise<FindByCriteriaCompanyUsersDto> {
+            return localVarFp.companyRoleCrudControllerFindByCriteria(findByCriteriaRequestDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Retrieve an entity by its ID
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyRoleCrudControllerFindOne(id: string, options?: any): AxiosPromise<CompanyUsersDto> {
+            return localVarFp.companyRoleCrudControllerFindOne(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update an existing entity
+         * @param {string} id 
+         * @param {CompanyUsersDto} companyUsersDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyRoleCrudControllerUpdate(id: string, companyUsersDto: CompanyUsersDto, options?: any): AxiosPromise<CompanyUsersDto> {
+            return localVarFp.companyRoleCrudControllerUpdate(id, companyUsersDto, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * CompanyRoleCrudApi - object-oriented interface
+ * @export
+ * @class CompanyRoleCrudApi
+ * @extends {BaseAPI}
+ */
+export class CompanyRoleCrudApi extends BaseAPI {
+    /**
+     * 
+     * @summary Create a new entity
+     * @param {CompanyUsersDto} companyUsersDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyRoleCrudApi
+     */
+    public companyRoleCrudControllerCreate(companyUsersDto: CompanyUsersDto, options?: AxiosRequestConfig) {
+        return CompanyRoleCrudApiFp(this.configuration).companyRoleCrudControllerCreate(companyUsersDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Delete an entity
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyRoleCrudApi
+     */
+    public companyRoleCrudControllerDelete(id: string, options?: AxiosRequestConfig) {
+        return CompanyRoleCrudApiFp(this.configuration).companyRoleCrudControllerDelete(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Retrieve all entities
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyRoleCrudApi
+     */
+    public companyRoleCrudControllerFindAll(options?: AxiosRequestConfig) {
+        return CompanyRoleCrudApiFp(this.configuration).companyRoleCrudControllerFindAll(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Search entities by criteria
+     * @param {FindByCriteriaRequestDto} findByCriteriaRequestDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyRoleCrudApi
+     */
+    public companyRoleCrudControllerFindByCriteria(findByCriteriaRequestDto: FindByCriteriaRequestDto, options?: AxiosRequestConfig) {
+        return CompanyRoleCrudApiFp(this.configuration).companyRoleCrudControllerFindByCriteria(findByCriteriaRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Retrieve an entity by its ID
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyRoleCrudApi
+     */
+    public companyRoleCrudControllerFindOne(id: string, options?: AxiosRequestConfig) {
+        return CompanyRoleCrudApiFp(this.configuration).companyRoleCrudControllerFindOne(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update an existing entity
+     * @param {string} id 
+     * @param {CompanyUsersDto} companyUsersDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyRoleCrudApi
+     */
+    public companyRoleCrudControllerUpdate(id: string, companyUsersDto: CompanyUsersDto, options?: AxiosRequestConfig) {
+        return CompanyRoleCrudApiFp(this.configuration).companyRoleCrudControllerUpdate(id, companyUsersDto, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * CompanyUserCrudApi - axios parameter creator
+ * @export
+ */
+export const CompanyUserCrudApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Create a new entity
+         * @param {UserCompanyRolePresenterDto} userCompanyRolePresenterDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyUserControllerCreate: async (userCompanyRolePresenterDto: UserCompanyRolePresenterDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'userCompanyRolePresenterDto' is not null or undefined
+            assertParamExists('companyUserControllerCreate', 'userCompanyRolePresenterDto', userCompanyRolePresenterDto)
+            const localVarPath = `/company-user`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(userCompanyRolePresenterDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Delete an entity
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyUserControllerDelete: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('companyUserControllerDelete', 'id', id)
+            const localVarPath = `/company-user/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Retrieve all entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyUserControllerFindAll: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/company-user`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Search entities by criteria
+         * @param {FindByCriteriaRequestDto} findByCriteriaRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyUserControllerFindByCriteria: async (findByCriteriaRequestDto: FindByCriteriaRequestDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'findByCriteriaRequestDto' is not null or undefined
+            assertParamExists('companyUserControllerFindByCriteria', 'findByCriteriaRequestDto', findByCriteriaRequestDto)
+            const localVarPath = `/company-user/find-by-criteria`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(findByCriteriaRequestDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Retrieve an entity by its ID
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyUserControllerFindOne: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('companyUserControllerFindOne', 'id', id)
+            const localVarPath = `/company-user/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update an existing entity
+         * @param {string} id 
+         * @param {UserCompanyRolePresenterDto} userCompanyRolePresenterDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyUserControllerUpdate: async (id: string, userCompanyRolePresenterDto: UserCompanyRolePresenterDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('companyUserControllerUpdate', 'id', id)
+            // verify required parameter 'userCompanyRolePresenterDto' is not null or undefined
+            assertParamExists('companyUserControllerUpdate', 'userCompanyRolePresenterDto', userCompanyRolePresenterDto)
+            const localVarPath = `/company-user/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(userCompanyRolePresenterDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * CompanyUserCrudApi - functional programming interface
+ * @export
+ */
+export const CompanyUserCrudApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = CompanyUserCrudApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Create a new entity
+         * @param {UserCompanyRolePresenterDto} userCompanyRolePresenterDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async companyUserControllerCreate(userCompanyRolePresenterDto: UserCompanyRolePresenterDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserCompanyRolePresenterDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.companyUserControllerCreate(userCompanyRolePresenterDto, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Delete an entity
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async companyUserControllerDelete(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.companyUserControllerDelete(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Retrieve all entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async companyUserControllerFindAll(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<UserCompanyRolePresenterDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.companyUserControllerFindAll(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Search entities by criteria
+         * @param {FindByCriteriaRequestDto} findByCriteriaRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async companyUserControllerFindByCriteria(findByCriteriaRequestDto: FindByCriteriaRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FindByCriteriaUserCompanyRolePresenterDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.companyUserControllerFindByCriteria(findByCriteriaRequestDto, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Retrieve an entity by its ID
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async companyUserControllerFindOne(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserCompanyRolePresenterDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.companyUserControllerFindOne(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Update an existing entity
+         * @param {string} id 
+         * @param {UserCompanyRolePresenterDto} userCompanyRolePresenterDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async companyUserControllerUpdate(id: string, userCompanyRolePresenterDto: UserCompanyRolePresenterDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserCompanyRolePresenterDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.companyUserControllerUpdate(id, userCompanyRolePresenterDto, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * CompanyUserCrudApi - factory interface
+ * @export
+ */
+export const CompanyUserCrudApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = CompanyUserCrudApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Create a new entity
+         * @param {UserCompanyRolePresenterDto} userCompanyRolePresenterDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyUserControllerCreate(userCompanyRolePresenterDto: UserCompanyRolePresenterDto, options?: any): AxiosPromise<UserCompanyRolePresenterDto> {
+            return localVarFp.companyUserControllerCreate(userCompanyRolePresenterDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Delete an entity
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyUserControllerDelete(id: string, options?: any): AxiosPromise<void> {
+            return localVarFp.companyUserControllerDelete(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Retrieve all entities
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyUserControllerFindAll(options?: any): AxiosPromise<Array<UserCompanyRolePresenterDto>> {
+            return localVarFp.companyUserControllerFindAll(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Search entities by criteria
+         * @param {FindByCriteriaRequestDto} findByCriteriaRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyUserControllerFindByCriteria(findByCriteriaRequestDto: FindByCriteriaRequestDto, options?: any): AxiosPromise<FindByCriteriaUserCompanyRolePresenterDto> {
+            return localVarFp.companyUserControllerFindByCriteria(findByCriteriaRequestDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Retrieve an entity by its ID
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyUserControllerFindOne(id: string, options?: any): AxiosPromise<UserCompanyRolePresenterDto> {
+            return localVarFp.companyUserControllerFindOne(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update an existing entity
+         * @param {string} id 
+         * @param {UserCompanyRolePresenterDto} userCompanyRolePresenterDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        companyUserControllerUpdate(id: string, userCompanyRolePresenterDto: UserCompanyRolePresenterDto, options?: any): AxiosPromise<UserCompanyRolePresenterDto> {
+            return localVarFp.companyUserControllerUpdate(id, userCompanyRolePresenterDto, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * CompanyUserCrudApi - object-oriented interface
+ * @export
+ * @class CompanyUserCrudApi
+ * @extends {BaseAPI}
+ */
+export class CompanyUserCrudApi extends BaseAPI {
+    /**
+     * 
+     * @summary Create a new entity
+     * @param {UserCompanyRolePresenterDto} userCompanyRolePresenterDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyUserCrudApi
+     */
+    public companyUserControllerCreate(userCompanyRolePresenterDto: UserCompanyRolePresenterDto, options?: AxiosRequestConfig) {
+        return CompanyUserCrudApiFp(this.configuration).companyUserControllerCreate(userCompanyRolePresenterDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Delete an entity
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyUserCrudApi
+     */
+    public companyUserControllerDelete(id: string, options?: AxiosRequestConfig) {
+        return CompanyUserCrudApiFp(this.configuration).companyUserControllerDelete(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Retrieve all entities
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyUserCrudApi
+     */
+    public companyUserControllerFindAll(options?: AxiosRequestConfig) {
+        return CompanyUserCrudApiFp(this.configuration).companyUserControllerFindAll(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Search entities by criteria
+     * @param {FindByCriteriaRequestDto} findByCriteriaRequestDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyUserCrudApi
+     */
+    public companyUserControllerFindByCriteria(findByCriteriaRequestDto: FindByCriteriaRequestDto, options?: AxiosRequestConfig) {
+        return CompanyUserCrudApiFp(this.configuration).companyUserControllerFindByCriteria(findByCriteriaRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Retrieve an entity by its ID
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyUserCrudApi
+     */
+    public companyUserControllerFindOne(id: string, options?: AxiosRequestConfig) {
+        return CompanyUserCrudApiFp(this.configuration).companyUserControllerFindOne(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update an existing entity
+     * @param {string} id 
+     * @param {UserCompanyRolePresenterDto} userCompanyRolePresenterDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CompanyUserCrudApi
+     */
+    public companyUserControllerUpdate(id: string, userCompanyRolePresenterDto: UserCompanyRolePresenterDto, options?: AxiosRequestConfig) {
+        return CompanyUserCrudApiFp(this.configuration).companyUserControllerUpdate(id, userCompanyRolePresenterDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

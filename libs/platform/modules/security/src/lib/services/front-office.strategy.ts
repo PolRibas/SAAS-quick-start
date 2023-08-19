@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 
 export interface FrontOfficeJwtPayload {
   userId: string;
+  companyId?: string;
 }
 
 @Injectable()
@@ -18,11 +19,10 @@ export class FrontOfficeJwtStrategy extends PassportStrategy(Strategy, 'front-of
   }
 
   async validate(jwtPayload: FrontOfficeJwtPayload) {
-    console.log('Front Office jwtPayload', jwtPayload)
-    const user = await this.authService.validateUser(jwtPayload);
-    if (!user || !user.admin) {
+    const response = await this.authService.validateCompany(jwtPayload);
+    if (!response) {
       throw new UnauthorizedException();
     }
-    return user;
+    return response;
   }
 }

@@ -7,12 +7,15 @@ import { IAbstractMongooseFactory } from '@saas-quick-start/common/abstract/fact
 @Injectable()
 export abstract class AbstractCrudService<T, Y> implements IAbstractCrud<T> {
   public readonly factory: IAbstractMongooseFactory<T, Y>;
+  public readonly populates?: string[];
 
   constructor(
     private readonly model: Model<Y>,
     factory: IAbstractMongooseFactory<T, Y>,
+    populates?: string[],
   ) {
     this.factory = factory;
+    this.populates = populates;
   }
 
   async create(entity: T): Promise<T> {
@@ -35,7 +38,6 @@ export abstract class AbstractCrudService<T, Y> implements IAbstractCrud<T> {
   }
 
   async update(id: string, entity: T): Promise<T> {
-    console.log('update', id, entity);
     const mongooseEntity = this.factory.domainToMongoose(entity);
     const result: Y = await this.model.findByIdAndUpdate(id, mongooseEntity, {
       new: true,
@@ -63,13 +65,19 @@ export abstract class AbstractCrudService<T, Y> implements IAbstractCrud<T> {
     const queryChain = this.model.find(mongooseQuery.filter);
 
     if (mongooseQuery.options && mongooseQuery.options.sort) {
-        queryChain.sort(mongooseQuery.options.sort);
+      queryChain.sort(mongooseQuery.options.sort);
+    }
+
+    if (this.populates) {
+      this.populates.forEach((populate: string) => {
+        queryChain.populate(populate)
+      })
     }
 
     const results = await queryChain
-        .skip(skip)
-        .limit(limit)
-        .exec();
+      .skip(skip)
+      .limit(limit)
+      .exec();
 
     const total = await this.model.countDocuments(mongooseQuery.filter).exec();
 

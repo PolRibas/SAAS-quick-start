@@ -1,5 +1,4 @@
 import {
-  IsArray,
   IsDateString,
   IsNotEmpty,
   IsOptional,
@@ -24,10 +23,10 @@ export class UserCompanyRoleDto {
   @IsNotEmpty()
   companyId: string;
 
-  @ApiProperty({ type: [String] })
-  @IsArray()
-  @IsString({ each: true })
-  roles: string[];
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  role: string;
 
   @ApiProperty({ required: false })
   @IsDateString()

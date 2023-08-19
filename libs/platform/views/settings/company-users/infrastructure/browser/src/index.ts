@@ -1,1 +1,1 @@
-export * from './lib/platform-views-settings-company-users-infrastructure-browser';
+export * from './lib';

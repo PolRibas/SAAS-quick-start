@@ -1,6 +1,5 @@
 import {
   Injectable,
-  ForbiddenException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -14,14 +13,18 @@ export class FrontOfficeRolesGuard extends AuthGuard('front-office') {
     this.role = role;
   }
 
-  handleRequest(err, user) {
-    console.log(`need ${this.role} role in FrontOfficeRolesGuard`)
-    if (!user) {
-      throw new UnauthorizedException();
+  handleRequest(err, response) {
+    if (response?.companyUser) {
+      const permissions = response.companyUser.role.permissions
+      if (permissions.includes(this.role) ||
+        permissions.includes('root-permission')) {
+        return {
+          ...response.user,
+          companyId: response.companyUser.companyId,
+          permissions,
+        }
+      }
     }
-    if (!user.admin) {
-      throw new ForbiddenException('Forbidden');
-    }
-    return user && user.admin;
+    throw new UnauthorizedException()
   }
 }

@@ -23,7 +23,7 @@ const getTableCacheItem = (
   sort: {
     key: string; order: "asc" | "desc" | undefined
   } | undefined,
-  conditions: FindByCriteriaPresenterFilterCondition[] | undefined
+  conditions: FindByCriteriaPresenterFilterCondition[] | undefined,
 ) => {
   const result = tableCacheData.find(item => {
     if (item.sort === undefined) {
@@ -101,7 +101,7 @@ export const DynamicTableSetStartSettings = async (
   setLoading(true)
   const cacheItem = getTableCacheItem(tableCacheData, page, limit, sort, conditions)
   let data: FindByCriteriaPresenterResponse<DynamicTableItemInterface>
-  if (cacheItem !== undefined && !skipCache) {
+  if (cacheItem !== undefined && !skipCache && tableConfig.title === cacheItem.title) {
     data = cacheItem.result
   } else {
     const response = await tableConfig.findByCriteriaFunction({
@@ -117,16 +117,15 @@ export const DynamicTableSetStartSettings = async (
     })
     data = response.data
   }
-  if (!tableHeaders.length) {
-    setTableHeaders(tableConfig.columns)
-    setTableHeadersOptions(tableConfig.columns)
-  }
+  setTableHeaders(tableConfig.columns)
+  setTableHeadersOptions(tableConfig.columns)
   const newCacheItem = {
     page,
     limit,
     sort,
     conditions: (conditions ?? undefined),
-    result: data
+    result: data,
+    title: tableConfig.title
   } as DataTableCacheItem
 
   setTablaCacheData([...tableCacheData, newCacheItem])

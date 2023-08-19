@@ -8,6 +8,8 @@ import { muiTheme } from '@saas-quick-start/platform/design/theme';
 import { FrontOfficeContextApiBrowserAdapter } from '@saas-quick-start/platform/context/infrastructure/browser';
 import { AuthProvider } from '@saas-quick-start/platform/context/presentation/react';
 
+const AuthServices = new FrontOfficeContextApiBrowserAdapter('http://localhost:5011')
+
 const CustomApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
@@ -18,7 +20,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
         <ThemeProvider theme={muiTheme}>
           <main>
             <AuthProvider
-              services={new FrontOfficeContextApiBrowserAdapter('http://localhost:5011')}
+              services={AuthServices}
               defaultPrivateRoute="/dashboard"
               defaultPublicRoute="/login"
             >

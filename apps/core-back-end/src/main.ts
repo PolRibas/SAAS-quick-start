@@ -31,16 +31,6 @@ async function bootstrap() {
       .setDescription('Core api for Saas')
       .setVersion('1.0')
       .addBearerAuth()
-      .addSecurity('portal', {
-        type: 'apiKey',
-        name: 'x-portal',
-        in: 'header',
-      })
-      .addSecurity('front-office', {
-        type: 'apiKey',
-        name: 'x-front-office',
-        in: 'header',
-      })
       .build();
     const document = SwaggerModule.createDocument(app, config);
     const theme = new SwaggerTheme('v3');

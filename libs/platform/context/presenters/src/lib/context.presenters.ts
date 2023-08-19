@@ -8,6 +8,7 @@ export interface ContextCompanyPresenter
   permissions: string[];
   role: string;
   menu: UserMenuPresenter[];
+  accessToken?: string;
 }
 export interface IStoredTokens {
   accessToken: string | null;

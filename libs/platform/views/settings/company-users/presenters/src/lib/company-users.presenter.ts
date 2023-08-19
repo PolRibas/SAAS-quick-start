@@ -7,5 +7,4 @@ export interface CompanyUsersPresenter extends UserCompanyRoleEntityInterface {
   username?: string;
 }
 
-
 export type CompanyRolePresenter = CompanyRoleEntityInterface

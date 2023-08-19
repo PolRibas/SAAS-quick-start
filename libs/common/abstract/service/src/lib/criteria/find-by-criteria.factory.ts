@@ -15,6 +15,22 @@ export class MongooseSearchCriteria<TRawDocType>
     this.criteria = request;
   }
 
+  /* TODO
+    ([
+      {
+        $lookup: {
+          from: "users", // nombre de la colección de usuarios en MongoDB (generalmente en plural)
+          localField: "author",
+          foreignField: "_id",
+          as: "author_info"
+        }
+      },
+      {
+        $match: { "author_info.email": "example@example.com" }
+      }
+    ])
+  */
+
   toMongooseQuery(): FindCriteriaMongoose<TRawDocType> {
     let filter: FindCriteriaMongoose<TRawDocType>['filter'] = undefined;
     const filters = this.criteria.conditions || [];
@@ -23,7 +39,6 @@ export class MongooseSearchCriteria<TRawDocType>
       const conditions = [];
       filters.forEach((condition) => {
         const operationObj = {};
-        console.log(condition.operation)
         if (condition.operation === FindByCriteriaOperationEnum.CN) {
           operationObj['$regex'] = new RegExp(condition.value as string, 'i');
         } else {
@@ -63,7 +78,6 @@ export class MongooseSearchCriteria<TRawDocType>
       options
     };
 
-    console.log(query.filter);
     return query;
   }
 

@@ -1,1 +1,1 @@
-export * from './lib/platform-views-settings-company-users-presentation-react';
+export * from './lib';

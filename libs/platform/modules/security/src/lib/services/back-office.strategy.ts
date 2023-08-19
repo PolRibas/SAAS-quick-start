@@ -18,7 +18,6 @@ export class BackOfficeJwtStrategy extends PassportStrategy(Strategy, 'back-offi
   }
 
   async validate(jwtPayload: BackOfficeJwtPayload) {
-    console.log('Back Office jwtPayload', jwtPayload)
     const user = await this.authService.validateUser(jwtPayload);
     if (!user || !user.admin) {
       throw new UnauthorizedException();

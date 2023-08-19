@@ -1,4 +1,4 @@
-import { AuthContextType, IStoredTokens } from "./auth.context.types";
+import { AuthContextType, IStoredTokens } from "@saas-quick-start/platform/context/presenters";
 
 export const TOKENS_KEYS = '*/--';
 
@@ -17,9 +17,9 @@ export const defaultContext: AuthContextType = {
   },
   defaultPublicRoute: '/',
   defaultPrivateRoute: '/admin',
-  getMe: () => {
-    return;
-  }
+  getMe: async () => undefined,
+  selectedCompany: null,
+  companies: [],
 };
 
 export const getStoredTokens = (): IStoredTokens | null => {

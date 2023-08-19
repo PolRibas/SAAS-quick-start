@@ -931,6 +931,424 @@
           }
         ]
       }
+    },
+    "/company-role-crud": {
+      "get": {
+        "operationId": "CompanyRoleCrudController_findAll",
+        "summary": "Retrieve all entities",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Entities retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyUsersDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "company-role-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "CompanyRoleCrudController_create",
+        "summary": "Create a new entity",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyUsersDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Entity created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyUsersDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "company-role-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/company-role-crud/{id}": {
+      "get": {
+        "operationId": "CompanyRoleCrudController_findOne",
+        "summary": "Retrieve an entity by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entity retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyUsersDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "company-role-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "CompanyRoleCrudController_update",
+        "summary": "Update an existing entity",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyUsersDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Entity updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyUsersDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "company-role-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "CompanyRoleCrudController_delete",
+        "summary": "Delete an entity",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entity deleted successfully"
+          }
+        },
+        "tags": [
+          "company-role-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/company-role-crud/find-by-criteria": {
+      "post": {
+        "operationId": "CompanyRoleCrudController_findByCriteria",
+        "summary": "Search entities by criteria",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FindByCriteriaRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Search completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindByCriteriaCompanyUsersDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "company-role-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/company-user": {
+      "get": {
+        "operationId": "CompanyUserController_findAll",
+        "summary": "Retrieve all entities",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Entities retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserCompanyRolePresenterDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "company-user-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "CompanyUserController_create",
+        "summary": "Create a new entity",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCompanyRolePresenterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Entity created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserCompanyRolePresenterDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "company-user-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/company-user/{id}": {
+      "get": {
+        "operationId": "CompanyUserController_findOne",
+        "summary": "Retrieve an entity by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entity retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserCompanyRolePresenterDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "company-user-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "CompanyUserController_update",
+        "summary": "Update an existing entity",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCompanyRolePresenterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Entity updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserCompanyRolePresenterDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "company-user-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "CompanyUserController_delete",
+        "summary": "Delete an entity",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entity deleted successfully"
+          }
+        },
+        "tags": [
+          "company-user-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/company-user/find-by-criteria": {
+      "post": {
+        "operationId": "CompanyUserController_findByCriteria",
+        "summary": "Search entities by criteria",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FindByCriteriaRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Search completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindByCriteriaUserCompanyRolePresenterDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "company-user-crud"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
     }
   },
   "info": {
@@ -947,16 +1365,6 @@
         "scheme": "bearer",
         "bearerFormat": "JWT",
         "type": "http"
-      },
-      "portal": {
-        "type": "apiKey",
-        "name": "x-portal",
-        "in": "header"
-      },
-      "front-office": {
-        "type": "apiKey",
-        "name": "x-front-office",
-        "in": "header"
       }
     },
     "schemas": {
@@ -1607,6 +2015,148 @@
           "company",
           "role",
           "permissions"
+        ]
+      },
+      "CompanyUsersDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "companyId",
+          "name",
+          "permissions"
+        ]
+      },
+      "FindByCriteriaCompanyUsersDto": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number",
+            "description": "Total number of items"
+          },
+          "page": {
+            "type": "number",
+            "description": "Current page of the results"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Limit for the results"
+          },
+          "items": {
+            "description": "Array of resulting items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompanyUsersDto"
+            }
+          }
+        },
+        "required": [
+          "total",
+          "items"
+        ]
+      },
+      "UserCompanyRolePresenterDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "company": {
+            "$ref": "#/components/schemas/CompanyEntityDto"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "user First Name"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "user Last Name"
+          },
+          "username": {
+            "type": "string",
+            "description": "user username"
+          }
+        },
+        "required": [
+          "userId",
+          "companyId",
+          "role",
+          "email",
+          "firstName",
+          "lastName",
+          "username"
+        ]
+      },
+      "FindByCriteriaUserCompanyRolePresenterDto": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number",
+            "description": "Total number of items"
+          },
+          "page": {
+            "type": "number",
+            "description": "Current page of the results"
+          },
+          "limit": {
+            "type": "number",
+            "description": "Limit for the results"
+          },
+          "items": {
+            "description": "Array of resulting items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserCompanyRolePresenterDto"
+            }
+          }
+        },
+        "required": [
+          "total",
+          "items"
         ]
       }
     }

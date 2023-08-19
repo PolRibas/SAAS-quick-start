@@ -11,6 +11,7 @@ import { ContextModule } from '@saas-quick-start/platform/context/presentation/n
 import { SecurityModule } from '@saas-quick-start/platform/modules/security';
 import { BackOfficeTableModule } from '@saas-quick-start/platform/views/table/presentation/nest';
 import { FrontOfficeCreateCompanyModule } from '@saas-quick-start/platform/views/create-company/presentation/nest';
+import { FrontOfficeCompanyUsersModule } from '@saas-quick-start/platform/views/settings/company-users/presentation/nest';
 
 const MONGO_URI = `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}`;
 
@@ -22,11 +23,20 @@ const MONGO_URI = `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWOR
       { name: 'RefreshToken', schema: refreshTokenSchema },
       { name: 'User', schema: userSchema },
     ]),
+
+    // Internal Modules
     SecurityModule,
     MigrationsModule,
+
+    // Global
     ContextModule,
+
+    // Back Office
     BackOfficeTableModule,
-    FrontOfficeCreateCompanyModule
+
+    // Front Office
+    FrontOfficeCreateCompanyModule,
+    FrontOfficeCompanyUsersModule
   ],
   controllers: [],
   providers: [],

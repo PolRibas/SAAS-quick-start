@@ -18,7 +18,7 @@ export class UserFactory
       username,
       password,
       updatedAt,
-      // companies,
+      registerToken
     } = domainUser;
     return new UserModel({
       _id: id,
@@ -30,7 +30,7 @@ export class UserFactory
       phoneNumber,
       createdAt,
       updatedAt,
-      // admin: true
+      registerToken
     });
   }
 
@@ -45,7 +45,7 @@ export class UserFactory
       phoneNumber,
       createdAt,
       updatedAt,
-      // companies,
+      registerToken
     } = mongooseUser;
     return new UserEntity({
       id: _id,
@@ -57,7 +57,7 @@ export class UserFactory
       password,
       createdAt,
       updatedAt,
-      // companies: companies.map(companyFactory.toDomain),
+      registerToken
     });
   }
 }

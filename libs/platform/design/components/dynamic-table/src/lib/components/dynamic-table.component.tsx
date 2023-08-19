@@ -24,8 +24,7 @@ export const DynamicTableComponent: React.FC = () => {
   } = useDataTableContext();
   const [loadingState, setLoadingState] = useState(false);
   const loadingRef = useRef(loading);
-  const t = useTranslations('labels')
-
+  const t = useTranslations('labels');
 
   const handleSortClick = (field: string) => {
     const isAsc = sort && sort.key === field && sort.order === 'asc';
@@ -53,7 +52,7 @@ export const DynamicTableComponent: React.FC = () => {
           <TableRow>
             {filteredHeaders.length ? (
               filteredHeaders.map((item) => {
-                return (
+                return item.sortable ? (
                   <TableCell key={item.id}>
                     <TableSortLabel
                       active={sort && sort.key === item.field}
@@ -65,6 +64,8 @@ export const DynamicTableComponent: React.FC = () => {
                       {t(item.label)}
                     </TableSortLabel>
                   </TableCell>
+                ) : (
+                  <TableCell key={item.id}>{t(item.label)}</TableCell>
                 );
               })
             ) : (

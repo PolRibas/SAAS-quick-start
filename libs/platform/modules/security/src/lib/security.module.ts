@@ -2,7 +2,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { refreshTokenSchema, userSchema } from '@saas-quick-start/infrastructure/database/models';
+import { refreshTokenSchema, userCompanyRoleSchema, userSchema } from '@saas-quick-start/infrastructure/database/models';
 import { AuthService, BackOfficeJwtStrategy, FrontOfficeJwtStrategy, JwtStrategy } from './services';
 
 @Module({
@@ -10,6 +10,7 @@ import { AuthService, BackOfficeJwtStrategy, FrontOfficeJwtStrategy, JwtStrategy
     MongooseModule.forFeature([
       { name: 'RefreshToken', schema: refreshTokenSchema },
       { name: 'User', schema: userSchema },
+      { name: 'UserCompanyRole', schema: userCompanyRoleSchema },
     ]),
     PassportModule,
     JwtModule.register({
