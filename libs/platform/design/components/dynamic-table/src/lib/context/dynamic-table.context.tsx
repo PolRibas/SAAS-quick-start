@@ -19,6 +19,7 @@ import { AxiosResponse } from 'axios';
 import { useRouter } from 'next/router';
 import { FindByCriteriaResponse } from '@saas-quick-start/common/abstract/service';
 import { FindByCriteriaPresenterFilterCondition } from '@saas-quick-start/platform/views/table/presenters';
+import { DynamicFormBackOfficeComboDto } from '@saas-quick-start/platform/design/components/dynamic-form';
 
 const defaultContextValue = {
   tableData: [],
@@ -51,6 +52,7 @@ const defaultContextValue = {
   selectedData: {},
   deleteSelectedItem: async () => undefined,
   submitFormItem: async () => undefined,
+  comboData: {}
 };
 
 const DataTableContext =
@@ -76,12 +78,17 @@ export const DataTableProvider: React.FC<DataTableProviderProps> = ({
   const [total, setTotal] = useState<number>(0);
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(10);
+  const [comboData, setComboData] = useState<{
+    [columnId: string]: DynamicFormBackOfficeComboDto[];
+  }>({});
   const [selectedData, setSelectedData] = useState<DynamicTableItemInterface>(
     {}
   );
   const [selectedRow, setSelectedRow] = useState<number | undefined>(undefined);
   const [creatingItem, setCreatingItem] = useState<boolean>(false);
-  const [conditions, setConditions] = useState<FindByCriteriaPresenterFilterCondition[] | undefined>(undefined);
+  const [conditions, setConditions] = useState<
+    FindByCriteriaPresenterFilterCondition[] | undefined
+  >(undefined);
   const [sort, setSort] = useState<
     | {
         key: string;
@@ -91,7 +98,7 @@ export const DataTableProvider: React.FC<DataTableProviderProps> = ({
   >({ key: tableConfig.columns[0].field, order: 'asc' });
   const router = useRouter();
 
-  const callDynamicTableSetStartSettings = (skipCache?: boolean) => {
+  const callDynamicTableSetStartSettings = (skipCache?: boolean, nonCallback?: boolean) => {
     DynamicTableSetStartSettings({
       tableConfig,
       baseUrl,
@@ -108,9 +115,10 @@ export const DataTableProvider: React.FC<DataTableProviderProps> = ({
       tableCacheData,
       setTableData,
       setTableHeaders,
+      setComboData,
       conditions,
       callback: () => {
-        if (router.query.id) {
+        if (router.query.id && !nonCallback) {
           const index = tableData.findIndex(
             (item) => item.id === router.query.id
           );
@@ -125,9 +133,20 @@ export const DataTableProvider: React.FC<DataTableProviderProps> = ({
   useEffect(() => {
     callDynamicTableSetStartSettings();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [baseUrl, limit, page, sort, tableConfig, token, tableHeaders, conditions]);
+  }, [
+    baseUrl,
+    limit,
+    page,
+    sort,
+    tableConfig,
+    token,
+    tableHeaders,
+    conditions,
+  ]);
 
   const onCloseItem = () => {
+    setSelectedRow(undefined);
+    setCreatingItem(false);
     router.push({
       pathname: router.pathname,
       query: Object.keys(router.query).reduce(
@@ -140,7 +159,7 @@ export const DataTableProvider: React.FC<DataTableProviderProps> = ({
         {}
       ),
     });
-    setSelectedRow(undefined);
+    callDynamicTableSetStartSettings(true, true)
   };
 
   const deleteSelectedItem = async () => {
@@ -151,19 +170,12 @@ export const DataTableProvider: React.FC<DataTableProviderProps> = ({
         token,
         selectedData,
         onFinish: () => {
-          setTablaCacheData([]);
           onCloseItem();
         },
       });
     }
   };
   const submitFormItem = async (data: DynamicTableItemInterface) => {
-    const onFinishFunction = () => {
-      setTablaCacheData([]);
-      setCreatingItem(false);
-      setSelectedData({});
-      onCloseItem();
-    };
     setLoading(true);
     if (selectedRow || selectedRow === 0) {
       DynamicTableUpdateItem({
@@ -171,7 +183,7 @@ export const DataTableProvider: React.FC<DataTableProviderProps> = ({
         baseUrl,
         token,
         selectedData: data,
-        onFinish: onFinishFunction,
+        onFinish: onCloseItem,
       });
     } else {
       DynamicTableCreateItem({
@@ -179,7 +191,7 @@ export const DataTableProvider: React.FC<DataTableProviderProps> = ({
         tableConfig,
         baseUrl,
         token,
-        onFinish: onFinishFunction,
+        onFinish: onCloseItem,
       });
     }
   };
@@ -231,9 +243,10 @@ export const DataTableProvider: React.FC<DataTableProviderProps> = ({
         submitFormItem,
         deleteSelectedItem,
         setConditions,
+        comboData,
         callDynamicTableSetData: () => {
-          callDynamicTableSetStartSettings(true)
-        }
+          callDynamicTableSetStartSettings(true);
+        },
       }}
     >
       {children}

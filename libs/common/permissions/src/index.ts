@@ -1,1 +1,1 @@
-export * from './lib/common-permissions';
+export * from './lib';

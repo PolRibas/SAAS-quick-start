@@ -2,7 +2,8 @@ import {
   FindByCriteriaPresenterFilterCondition,
   FindByCriteriaPresenterResponse,
   FindByCriteriaPresenterRequest
-} from "@saas-quick-start/platform/views/table/presenters";import { DynamicTableColumnInterface, DynamicTableInterface, DynamicTableItemInterface } from "../dynamic-table.interface";
+} from "@saas-quick-start/platform/views/table/presenters"; import { DynamicTableColumnInterface, DynamicTableInterface, DynamicTableItemInterface } from "../dynamic-table.interface";
+import { DynamicFormBackOfficeComboDto } from "@saas-quick-start/platform/design/components/dynamic-form";
 
 export interface DataTableContextProps {
   tableData: DynamicTableItemInterface[];
@@ -33,6 +34,7 @@ export interface DataTableContextProps {
   deleteSelectedItem: () => Promise<void>;
   submitFormItem: (form: DynamicTableItemInterface) => Promise<void>;
   setConditions: (conditions: FindByCriteriaPresenterFilterCondition[] | undefined) => void;
+  comboData: { [columnId: string]: DynamicFormBackOfficeComboDto[] }
 }
 
 export interface DataTableProviderProps {

@@ -23,6 +23,7 @@ export enum DynamicFormFormTypeEnum {
   checkbox = 'checkbox',
   radio = 'radio',
   hidden = 'hidden',
+  permissions = 'permissions',
 }
 
 export interface DynamicFormApiParams {
@@ -47,8 +48,8 @@ export interface DynamicFormBaseField {
   floatRight?: boolean;
   unEditable?: boolean;
   notRequired?: boolean;
-  getCombo?: (apiParams: DynamicFormApiParams) => Promise<
-    AxiosResponse<DynamicFormBackOfficeComboDto[]>
+  getCombo?: () => Promise<
+    DynamicFormBackOfficeComboDto[]
   >;
   type: DynamicFormFormTypeEnum;
   many?: boolean;

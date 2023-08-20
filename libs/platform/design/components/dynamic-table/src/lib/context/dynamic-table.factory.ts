@@ -6,6 +6,7 @@ import {
   FindByCriteriaPresenterResponse,
   FindByCriteriaPresenterJoinEnum
 } from "@saas-quick-start/platform/views/table/presenters";
+import { DynamicFormBackOfficeComboDto, DynamicFormFormTypeEnum } from "@saas-quick-start/platform/design/components/dynamic-form";
 
 const getAxiosInstance = (token: string | undefined) => {
   return axios.create(
@@ -77,7 +78,8 @@ export const DynamicTableSetStartSettings = async (
     skipCache,
     conditions,
     setTableHeaders,
-    callback
+    callback,
+    setComboData
   }: {
     tableConfig: DynamicTableInterface,
     baseUrl: string, token: string | undefined,
@@ -95,7 +97,10 @@ export const DynamicTableSetStartSettings = async (
     setTableHeadersOptions: (options: DynamicTableColumnInterface[]) => void,
     setTableData: (data: DynamicTableItemInterface[]) => void,
     setTableHeaders: (headers: DynamicTableColumnInterface[]) => void,
-    callback: () => void
+    callback: () => void,
+    setComboData: React.Dispatch<React.SetStateAction<{
+      [columnId: string]: DynamicFormBackOfficeComboDto[];
+    }>>
   }
 ) => {
   setLoading(true)
@@ -117,6 +122,15 @@ export const DynamicTableSetStartSettings = async (
     })
     data = response.data
   }
+  await Promise.all(tableConfig.columns.map(async column => {
+    if (column.type === DynamicFormFormTypeEnum.combo && column.getCombo) {
+      const comboData = await column.getCombo()
+      setComboData(prevState => ({
+        ...prevState,
+        [column.id]: comboData
+      }))
+    }
+  }))
   setTableHeaders(tableConfig.columns)
   setTableHeadersOptions(tableConfig.columns)
   const newCacheItem = {

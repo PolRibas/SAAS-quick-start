@@ -35,18 +35,21 @@ const CompanyRolesAttributes: DynamicTableColumnInterface[] = [
     id: 'name',
     label: 'label-name',
     field: 'name',
-    disabled: true,
+    disabled: false,
     type: DynamicFormFormTypeEnum.string,
     defaultValue: '',
     sortable: true,
     value: '',
-    validationRules: [
-      {
-        rule: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
-        errorCode: 'invalid-role',
-        error: false,
-      },
-    ],
+  },
+  {
+    id: 'permissions',
+    label: 'label-permissions',
+    field: 'permissions',
+    disabled: false,
+    type: DynamicFormFormTypeEnum.permissions,
+    defaultValue: '',
+    sortable: false,
+    value: '',
   },
 ];
 
@@ -56,13 +59,19 @@ export const getCompanyRolesDataBase = (selectedCompany): DynamicTableInterface 
   itemTitle: (item: DynamicTableItemInterface) => `${item['name']}`,
   itemSubtitle: (item: DynamicTableItemInterface) => `${item['name']}`,
   columns: CompanyRolesAttributes,
-  canDelete: selectedCompany.permissions?.includes('delete-company-role') ||  selectedCompany.permissions?.includes('root-permission'),
-  canUpdate: selectedCompany.permissions?.includes('update-company-role') ||  selectedCompany.permissions?.includes('root-permission'),
-  canCreate: selectedCompany.permissions?.includes('create-company-role') ||  selectedCompany.permissions?.includes('root-permission'),
+  canDelete: selectedCompany.permissions?.includes('delete-company-role') || selectedCompany.permissions?.includes('root-permission'),
+  canUpdate: selectedCompany.permissions?.includes('update-company-role') || selectedCompany.permissions?.includes('root-permission'),
+  canCreate: selectedCompany.permissions?.includes('create-company-role') || selectedCompany.permissions?.includes('root-permission'),
   filters: [{
     type: 'text',
     key: 'name',
   }],
+  createFunction: async (apiParams: DynamicFormApiParams, item: DynamicTableItemInterface) => {
+    item.companyId = selectedCompany.id;
+    const result = await getCompanyRolesApi(apiParams).companyRoleCrudControllerCreate(
+      item as unknown as CompanyUsersDto);
+    return result as unknown as AxiosResponse<DynamicTableItemInterface>;
+  },
   deleteFunction: async (apiParams: DynamicFormApiParams, id: string) => {
     const result = await getCompanyRolesApi(apiParams).companyRoleCrudControllerDelete(id);
     return result as unknown as AxiosResponse<void>;
@@ -77,22 +86,17 @@ export const getCompanyRolesDataBase = (selectedCompany): DynamicTableInterface 
     return result as unknown as AxiosResponse<DynamicTableItemInterface>;
   },
   findByCriteriaFunction: async (apiParams: DynamicFormApiParams, criteria: FindByCriteriaPresenterRequest) => {
-    try {
-      criteria.conditions = criteria.conditions || [];
-      criteria.join = undefined;
-      criteria.conditions.push({
-        key: 'companyId',
-        operation: FindByCriteriaPresenterOperationEnum.EQ,
-        value: selectedCompany.id,
-      });
-      const result = await getCompanyRolesApi(apiParams).companyRoleCrudControllerFindByCriteria(
-        criteria as UserFindByCriteriaResponseDtoClass,
-      );
-      return result as unknown as AxiosResponse<FindByCriteriaPresenterResponse<DynamicTableItemInterface>>;
-    } catch (e) {
-      console.log(e);
-      throw e;
-    }
+    criteria.conditions = criteria.conditions || [];
+    criteria.join = undefined;
+    criteria.conditions.push({
+      key: 'companyId',
+      operation: FindByCriteriaPresenterOperationEnum.EQ,
+      value: selectedCompany.id,
+    });
+    const result = await getCompanyRolesApi(apiParams).companyRoleCrudControllerFindByCriteria(
+      criteria as UserFindByCriteriaResponseDtoClass,
+    );
+    return result as unknown as AxiosResponse<FindByCriteriaPresenterResponse<DynamicTableItemInterface>>;
   },
 });
 

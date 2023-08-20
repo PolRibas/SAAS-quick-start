@@ -19,8 +19,8 @@ export const CompanyUsersView: FC<{ baseUrl: string }> = (props) => {
   const t = useTranslations('settings');
 
   const companyUserTable = useMemo(() => {
-    return getCompanyUsersDataBase(selectedCompany as ContextCompanyPresenter);
-  }, [selectedCompany]);
+    return getCompanyUsersDataBase(selectedCompany as ContextCompanyPresenter, props.baseUrl);
+  }, [selectedCompany, props.baseUrl]);
 
   const companyRolesTable = useMemo(() => {
     return getCompanyRolesDataBase(selectedCompany as ContextCompanyPresenter);

@@ -33,7 +33,13 @@ export abstract class AbstractCrudService<T, Y> implements IAbstractCrud<T> {
   }
 
   async findOne(id: string): Promise<T> {
-    const result: Y = await this.model.findById(id);
+    const queryChain = this.model.findById(id)
+    if (this.populates) {
+      this.populates.forEach((populate: string) => {
+        queryChain.populate(populate)
+      })
+    }
+    const result: Y = await queryChain.exec();
     return result ? this.factory.mongooseToDomain(result) : null;
   }
 

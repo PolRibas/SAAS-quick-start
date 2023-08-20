@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { useDataTableContext } from '../context';
 import { useTranslations } from 'next-intl';
+import { DynamicFormFormTypeEnum } from '@saas-quick-start/platform/design/components/dynamic-form';
 
 export const DynamicTableComponent: React.FC = () => {
   const {
@@ -21,7 +22,8 @@ export const DynamicTableComponent: React.FC = () => {
     sort,
     setSelectedRow,
     selectedRow,
-    fullConfig
+    fullConfig,
+    comboData,
   } = useDataTableContext();
   const [loadingState, setLoadingState] = useState(false);
   const loadingRef = useRef(loading);
@@ -78,16 +80,29 @@ export const DynamicTableComponent: React.FC = () => {
           {tableData.map((row, i) => (
             <TableRow
               key={`${row.field}_item_${i}`}
-              onClick={() => fullConfig.findByIdFunction ? setSelectedRow(i) : null}
+              onClick={() =>
+                fullConfig.findByIdFunction ? setSelectedRow(i) : null
+              }
               selected={i === selectedRow}
               sx={{
                 cursor: fullConfig.findByIdFunction ? 'pointer' : 'default',
               }}
             >
               {filteredHeaders.map((item, index) => {
-                return (
+                return item.type === DynamicFormFormTypeEnum.combo ? (
                   <TableCell key={`${row.field}_item_${i}_${index}`}>
-                    {row[item.field] as string}
+                    {comboData[item.field]
+                      ? comboData[item.field].find(
+                          (comboItem) =>
+                            comboItem.value === (row[item.field] as string)
+                        )?.description
+                      : '... not found'}
+                  </TableCell>
+                ) : (
+                  <TableCell key={`${row.field}_item_${i}_${index}`}>
+                    {item.type === DynamicFormFormTypeEnum.permissions
+                      ? (row[item.field] as string[]).join(', ')
+                      : (row[item.field] as string)}
                   </TableCell>
                 );
               })}

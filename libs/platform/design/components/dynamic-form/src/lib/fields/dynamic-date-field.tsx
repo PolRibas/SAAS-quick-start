@@ -6,12 +6,10 @@ import { useTranslations } from 'next-intl';
 
 interface DynamicFormDateFieldProps {
   field: DynamicFormBaseField;
-  index?: number;
 }
 
 export const DynamicFormDateField: React.FC<DynamicFormDateFieldProps> = ({
   field,
-  index,
 }) => {
   const { updateField, getFieldValue, disabled } = useDynamicFormContext();
   const translation = useTranslations('error');
