@@ -206,13 +206,13 @@ export class ContextServices extends AbstractCrudService<
         code: messagesMenuCodes.dashboard,
         order: 0,
         link: `/dashboard`,
-        icon: IconNames.DASHBOARD,
+        icon: 'Dashboard',
       }),
       new UserMenuEntity({
         code: messagesMenuCodes.tables,
         order: 1,
         link: `/table`,
-        icon: IconNames.TABLE,
+        icon: 'ManageSearch',
       }),
     ]
     if (user.admin) {
@@ -221,7 +221,7 @@ export class ContextServices extends AbstractCrudService<
           code: messagesMenuCodes.user,
           order: 2,
           link: `/user`,
-          icon: IconNames.USER,
+          icon: 'ManageAccounts',
         })
       )
     }
@@ -235,23 +235,22 @@ export class ContextServices extends AbstractCrudService<
         code: messagesMenuCodes.dashboard,
         order: 0,
         link: `/dashboard`,
-        icon: IconNames.DASHBOARD,
+        icon: 'Dashboard',
       }),
       new UserMenuEntity({
         code: messagesMenuCodes.settings,
-        order: 0,
+        order: 10,
         link: `/settings`,
-        icon: IconNames.SETTINGS,
+        icon: 'Settings',
       }),
     ]
     if (company.permissions.includes(CompanyPermissionsList.readCompanyAnalytics)) {
       menus.push(
         new UserMenuEntity({
-          code: messagesMenuCodes.companyUsers,
-          order: 1,
-          link: `/settings/company-users`,
-          icon: IconNames.USER,
-          parentId: messagesMenuCodes.settings
+          code: messagesMenuCodes.analytics,
+          order: 9,
+          link: `/analytics`,
+          icon: 'Analytics',
         })
       )
     }

@@ -11,12 +11,14 @@ import {
   Toolbar,
   Collapse,
   useTheme,
+  Divider,
 } from '@mui/material';
 import { getIconByName } from '@saas-quick-start/platform/design/assets/react';
 import { IconNames } from '@saas-quick-start/platform/design/assets/constants';
 import { LayoutContext } from '../context';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import { DrawerItemComponent } from './drawer-item.component';
 
 interface ItemNav {
   code: string;
@@ -66,72 +68,6 @@ export const DefaultAppDrawer: React.FC = () => {
     }, []);
   }, [userMenu]);
 
-  const DrawerItem: React.FC<ItemNav> = (item) => {
-    const IconComponent = item.icon
-      ? getIconByName(item.icon as IconNames)
-      : null;
-    const isActive = item.exact
-      ? pathname === item.link
-      : item.link && pathname.startsWith(item.link);
-
-    return (
-      <ListItemButton
-        key={item.code}
-        onClick={() => {
-          if (item.children) {
-            setMenuOpen((prevState) => ({
-              ...prevState,
-              [item.code]: !prevState[item.code],
-            }));
-          } else if (item.link) {
-            push(item.link);
-          }
-        }}
-        sx={{
-          height: '48px',
-          backgroundColor: isActive ? theme.palette.primary.dark : undefined,
-          borderLeft: isActive
-            ? `4px solid ${theme.palette.secondary.main}`
-            : '4px solid transparent',
-          width: drawerWidth,
-          overflow: 'hidden',
-          transition: 'width 0.5s',
-          '&:hover': {
-            backgroundColor: theme.palette.primary.light,
-            width: drawerWidth,
-            overflow: 'hidden',
-            transition: 'width 0.5s',
-          },
-        }}
-      >
-        {IconComponent && (
-          <ListItemIcon>
-            <IconComponent color="secondary" />
-          </ListItemIcon>
-        )}
-        {isSidebarOpen && (
-          <ListItemText
-            sx={{
-              maxWidth: drawerWidth - 50,
-              transition: 'maxWidth 0.5s ease-in-out',
-              overflow: 'hidden',
-              whiteSpace: 'nowrap',
-              color: theme.palette.secondary.main,
-            }}
-            primary={translation(item.code)}
-          />
-        )}
-        {isSidebarOpen && item.children ? (
-          menuOpen[item.code] ? (
-            <ExpandLess color="secondary" />
-          ) : (
-            <ExpandMore color="secondary" />
-          )
-        ) : null}
-      </ListItemButton>
-    );
-  };
-
   const drawerContent = (
     <Box
       sx={{
@@ -143,20 +79,28 @@ export const DefaultAppDrawer: React.FC = () => {
       }}
     >
       <div>
-        <Toolbar />
-        <List sx={{ width: drawerWidth, transition: '0.5s' }}>
+        <Toolbar
+          sx={{
+            minHeight: '90px !important',
+          }}
+        />
+        <Divider
+          sx={{
+            border: 0,
+            height: '2px',
+            marginBottom: '1rem',
+            background:
+              'linear-gradient(to right, rgba(52, 71, 103, 0), rgba(52, 71, 103, 0.1), rgba(52, 71, 103, 0))',
+          }}
+        />
+        <List sx={{ width: 'auto', transition: '0.5s' }}>
           {DrawerMenu.map((item: ItemNav, index: number) => (
             <React.Fragment key={`${item.code}_drawer_${index}`}>
-              <DrawerItem {...item} exact={true} key={item.code + 'drawer' + index} />
-              {item.children && (
-                <Collapse key={item.code + 'collapse'  + index} in={menuOpen[item.code]} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
-                    {item.children.map((child: ItemNav, i: number) => (
-                      <DrawerItem key={child.code + 'child-drawer' + index + `${i}`} {...child} child />
-                    ))}
-                  </List>
-                </Collapse>
-              )}
+              <DrawerItemComponent
+                {...item}
+                exact={true}
+                key={item.code + 'drawer' + index}
+              />
             </React.Fragment>
           ))}
         </List>
@@ -170,7 +114,7 @@ export const DefaultAppDrawer: React.FC = () => {
       sx={{
         width: { sm: drawerWidth },
         flexShrink: { sm: 0 },
-        backgroundColor: 'primary',
+        backgroundColor: 'transparent',
       }}
       aria-label="mailbox folders"
     >
@@ -203,7 +147,10 @@ export const DefaultAppDrawer: React.FC = () => {
             boxSizing: 'border-box',
             width: drawerWidth,
             transition: '0.5s',
-            background: theme.palette.primary.main,
+            paddingRight: '20px',
+            paddingLeft: '20px',
+            border: 'none',
+            background: 'transparent',
           },
         }}
         open

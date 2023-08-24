@@ -143,13 +143,6 @@ export const getCompanyUsersDataBase = (selectedCompany: ContextCompanyPresenter
     defaultValue: '',
     sortable: true,
     value: '',
-    validationRules: [
-      {
-        rule: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
-        errorCode: 'invalid-role',
-        error: false,
-      },
-    ],
   }, ...CompanyUsersAttributes],
   filters: undefined,
   canDelete: selectedCompany.permissions?.includes('delete-company-user') || selectedCompany.permissions?.includes('root-permission'),

@@ -12,9 +12,14 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { useDataTableContext } from '../context';
 import { useRouter } from 'next/router';
-import { FindByCriteriaPresenterOperationEnum, FindByCriteriaPresenterFilterCondition } from '@saas-quick-start/platform/views/table/presenters';
+import {
+  FindByCriteriaPresenterOperationEnum,
+  FindByCriteriaPresenterFilterCondition,
+} from '@saas-quick-start/platform/views/table/presenters';
 
-export const DynamicTableFiltersComponent: React.FC = () => {
+export const DynamicTableFiltersComponent: React.FC<{
+  filterSlot?: React.ReactNode;
+}> = ({ filterSlot }) => {
   const [filterValue, setFilterValue] = useState('');
   const {
     setCreatingItem,
@@ -96,68 +101,78 @@ export const DynamicTableFiltersComponent: React.FC = () => {
         paddingRight: 0,
 
         display: 'flex',
-        justifyContent: 'flex-end',
+        justifyContent: filterSlot ? 'space-between' : 'flex-end',
         alignContent: 'center',
-        padding: '0.5rem',
-        borderBottom: '1px solid rgba(224, 224, 224, 1)',
+        alignItems: 'center',
+        // borderBottom: '1px solid rgba(224, 224, 224, 1)',
       }}
-    >
-      <TextField
-        value={filterValue}
-        onChange={handleFilterChange}
-        disabled={!fullConfig.filters}
-        placeholder="Search..."
-        sx={{
-          marginRight: '0.5rem',
-          '& .MuiOutlinedInput-root': {
-            boxShadow: 'none',
-            borderColor: 'transparent',
-            borderRadius: 8,
-            border: 'none',
-            '&:hover': {
-              borderColor: 'transparent',
-            },
-            '&.Mui-focused': {
+      >
+      {filterSlot}
+      <Box sx={{
+        paddingLeft: 0,
+        paddingRight: 0,
+        display: 'flex',
+        padding: '0.5rem',
+        justifyContent: filterSlot ? 'space-between' : 'flex-end',
+        alignContent: 'center',
+      }}>
+        <TextField
+          value={filterValue}
+          onChange={handleFilterChange}
+          disabled={!fullConfig.filters}
+          placeholder="Search..."
+          sx={{
+            marginRight: '0.5rem',
+            '& .MuiOutlinedInput-root': {
               boxShadow: 'none',
               borderColor: 'transparent',
+              borderRadius: 8,
+              border: 'none',
+              '&:hover': {
+                borderColor: 'transparent',
+              },
+              '&.Mui-focused': {
+                boxShadow: 'none',
+                borderColor: 'transparent',
+              },
             },
-          },
-          '& .MuiInputBase-input': {
-            boxShadow: 'none',
-            borderRadius: 0,
-            borderColor: 'transparent',
-          },
-        }}
-        size="small"
-        color="primary"
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                color="primary"
-                size="small"
-                onClick={() => handleSearch(filterValue)}
-                disabled={!fullConfig.filters}
-              >
-                <SearchIcon />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-      />
-      <ButtonGroup color="primary" aria-label="control buttons group">
-        {fullConfig.canCreate ? (
-          <IconButton onClick={handleCreateItem}>
-            <AddIcon />
+            '& .MuiInputBase-input': {
+              boxShadow: 'none',
+              borderRadius: 0,
+              borderColor: 'transparent',
+            },
+          }}
+          size="small"
+          color="primary"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  color="primary"
+                  size="small"
+                  onClick={() => handleSearch(filterValue)}
+                  disabled={!fullConfig.filters}
+                >
+                  <SearchIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <ButtonGroup color="primary" aria-label="control buttons group">
+          {fullConfig.canCreate ? (
+            <IconButton onClick={handleCreateItem}>
+              <AddIcon />
+            </IconButton>
+          ) : null}
+          <IconButton onClick={handleSearchAgain}>
+            <RefreshIcon />
           </IconButton>
-        ) : null}
-        <IconButton onClick={handleSearchAgain}>
-          <RefreshIcon />
-        </IconButton>
-        <IconButton onClick={handleOpenOptions}>
-          <MoreVertIcon />
-        </IconButton>
-      </ButtonGroup>
+          <IconButton onClick={handleOpenOptions}>
+            <MoreVertIcon />
+          </IconButton>
+        </ButtonGroup>
+      </Box>
     </Box>
   );
 };

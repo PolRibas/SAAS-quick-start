@@ -12,14 +12,15 @@ export const DynamicTable: React.FC<{
   dynamicTable: DynamicTableInterface;
   baseUrl: string;
   token: string | undefined;
-}> = ({ dynamicTable, baseUrl, token }) => {
+  filterSlot?: React.ReactNode;
+}> = ({ dynamicTable, baseUrl, token, filterSlot }) => {
   return (
     <DataTableProvider
       tableConfig={dynamicTable}
       baseUrl={baseUrl}
       token={token}
     >
-      <DynamicTableFiltersComponent />
+      <DynamicTableFiltersComponent filterSlot={filterSlot} />
       <DynamicTableComponent />
       <DynamicTablePaginationComponent />
       <DynamicTableItemComponent />

@@ -153,11 +153,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
         registerService: services.register ?? undefined,
       }}
     >
-      {loading ? null : user && !noneLayoutRoutes.includes(pathname) ? (
-        <DesignLayout userMenu={userMenu}>{children}</DesignLayout>
-      ) : (
-        children
-      )}
+      <main style={{
+        backgroundColor: '#F6F7F8', minHeight: '100vh',
+      }}>
+        {loading ? null : user && !noneLayoutRoutes.includes(pathname) ? (
+          <DesignLayout userMenu={userMenu}>{children}</DesignLayout>
+        ) : (
+          children
+        )}
+      </main>
     </AuthContext.Provider>
   );
 };

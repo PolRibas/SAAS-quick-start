@@ -13,7 +13,7 @@ const defaultLayoutState: LayoutState = {
   isMobile: false,
   isTablet: false,
   userMenu: [],
-  drawerWidth: 240
+  drawerWidth: 270
 };
 
 export const LayoutContext = createContext<LayoutContextType>({
@@ -39,7 +39,7 @@ export const LayoutProvider: React.FC<MyComponentProps> = ({
 
   const toggleSidebar = useCallback(() => {
     setIsSidebarOpen((prev) => !prev);
-    setDrawerWidth((prev) => (prev === 60 ? 240 : 60));
+    setDrawerWidth((prev) => (prev === 90 ? 270 : 90));
   }, []);
 
   const showNavbar = useCallback(() => {

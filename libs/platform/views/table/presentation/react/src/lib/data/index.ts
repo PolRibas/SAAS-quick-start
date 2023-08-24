@@ -3,8 +3,8 @@ import { UserDataBase } from "./user.data";
 import { CompanyDataBase } from "./company.data";
 
 export const databaseData: {
-  [key: string]: DynamicTableInterface
+  [key: string]: DynamicTableInterface & { icon: string }
 } = {
-  user: UserDataBase,
-  company: CompanyDataBase,
+  user: { ...UserDataBase, icon: 'ManageAccounts' },
+  company: { ...CompanyDataBase, icon: 'WorkspacePremium' },
 }

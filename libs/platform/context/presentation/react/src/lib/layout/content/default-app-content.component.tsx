@@ -14,7 +14,7 @@ export const DefaultAppContent: React.FC<DefaultAppContentProps> = ({
         flexGrow: 1,
         p: 3,
         width: { sm: `calc(100% - ${drawerWidth}px)` },
-        paddingTop: `64px`,
+        paddingTop: `100px`,
         transition: { sm: 'width 0.5s' },
       }}
     >

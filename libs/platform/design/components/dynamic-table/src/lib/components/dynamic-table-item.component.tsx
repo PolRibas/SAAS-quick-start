@@ -16,6 +16,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Divider,
   Typography,
 } from '@mui/material';
 import { useTranslations } from 'next-intl';
@@ -131,7 +132,6 @@ export const DynamicTableItemComponent: React.FC = () => {
         <Card sx={{ height: '100%', overflow: 'auto', borderRadius: 0 }}>
           <CardHeader
             sx={{
-              backgroundColor: 'primary.main',
               borderRadius: 0,
             }}
             title={
@@ -148,11 +148,7 @@ export const DynamicTableItemComponent: React.FC = () => {
                     alignItems: 'center',
                   }}
                 >
-                  <IconButton
-                    edge="end"
-                    color="secondary"
-                    onClick={handleClose}
-                  >
+                  <IconButton edge="end" color="primary" onClick={handleClose}>
                     <ArrowBackIcon />
                   </IconButton>
                   {(!!selectedRow || selectedRow === 0) &&
@@ -164,13 +160,17 @@ export const DynamicTableItemComponent: React.FC = () => {
                       }}
                     >
                       <Box>
-                        <Typography variant="h6" component="div" color="white">
+                        <Typography
+                          variant="h6"
+                          component="div"
+                          color="primary"
+                        >
                           {fullConfig.itemTitle(tableData[selectedRow])}
                         </Typography>
                         <Typography
                           variant="caption"
                           component="div"
-                          color="secondary.light"
+                          color="black"
                         >
                           {fullConfig.itemSubtitle(tableData[selectedRow])}
                         </Typography>
@@ -181,8 +181,8 @@ export const DynamicTableItemComponent: React.FC = () => {
                 <div>
                   {creatingItem ? (
                     <StyledButton
-                      color="secondary"
-                      variant="outlined"
+                      color="primary"
+                      variant="contained"
                       type="submit"
                       disabled={isDisable || !fullConfig.canCreate}
                     >
@@ -199,8 +199,8 @@ export const DynamicTableItemComponent: React.FC = () => {
                         {t('label-delete')}
                       </StyledButton>
                       <StyledButton
-                        color="secondary"
-                        variant="outlined"
+                        color="primary"
+                        variant="contained"
                         type="submit"
                         disabled={isDisable || !fullConfig.canUpdate}
                       >
@@ -212,6 +212,15 @@ export const DynamicTableItemComponent: React.FC = () => {
               </Toolbar>
             }
           ></CardHeader>
+          <Divider
+            sx={{
+              border: 0,
+              height: '2px',
+              marginTop: -1,
+              background:
+                'linear-gradient(to right, rgba(52, 71, 103, 0), rgba(52, 71, 103, 0.1), rgba(52, 71, 103, 0))',
+            }}
+          />
           <CardContent
             sx={{
               height: '100vh',
