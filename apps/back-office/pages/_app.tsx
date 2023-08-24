@@ -8,7 +8,7 @@ import { muiTheme } from '@saas-quick-start/platform/design/theme';
 import { ContextApiBrowserAdapter } from '@saas-quick-start/platform/context/infrastructure/browser';
 import { AuthProvider } from '@saas-quick-start/platform/context/presentation/react';
 
-const AuthServices = new ContextApiBrowserAdapter('http://localhost:5011')
+const AuthServices = new ContextApiBrowserAdapter('http://localhost:5011');
 
 const CustomApp = ({ Component, pageProps }: AppProps) => {
   return (
@@ -18,15 +18,13 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
       </Head>
       <NextIntlProvider messages={pageProps.messages}>
         <ThemeProvider theme={muiTheme}>
-          <main>
-            <AuthProvider
-              services={AuthServices}
-              defaultPrivateRoute="/dashboard"
-              defaultPublicRoute="/login"
-            >
-              <Component {...pageProps} />
-            </AuthProvider>
-          </main>
+          <AuthProvider
+            services={AuthServices}
+            defaultPrivateRoute="/dashboard"
+            defaultPublicRoute="/login"
+          >
+            <Component {...pageProps} />
+          </AuthProvider>
         </ThemeProvider>
       </NextIntlProvider>
     </>

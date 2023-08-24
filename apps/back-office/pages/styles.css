@@ -15,3 +15,6 @@ html {
   border-style: solid;
   border-color: currentColor;
 }
+body{
+  background-color: #F6F7F8;
+}
