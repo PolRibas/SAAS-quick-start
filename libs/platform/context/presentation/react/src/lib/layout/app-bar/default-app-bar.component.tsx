@@ -15,7 +15,7 @@ const SettingsIcon = getIconByName('AddLocation');
 const UserIcon = getIconByName('ManageAccounts');
 
 export const DefaultAppBar: React.FC = () => {
-  const { drawerWidth, toggleSidebar, isSidebarOpen } =
+  const { drawerWidth, toggleSidebar, isSidebarOpen, showNavbar, isMobile } =
     React.useContext(LayoutContext);
 
   const [isActive, setIsActive] = useState(false);
@@ -25,8 +25,6 @@ export const DefaultAppBar: React.FC = () => {
     };
     window.addEventListener('scroll', handleScroll);
     handleScroll();
-
-    // Clean up the event listener when the component is unmounted
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -89,13 +87,11 @@ export const DefaultAppBar: React.FC = () => {
               fontSize: '12px',
             }}
           >
-            {!isSidebarOpen ? (
+            {!isSidebarOpen && !isMobile ? (
               <MenuOpen
                 color="primary"
                 onClick={toggleSidebar}
                 sx={{
-                  transform: !isSidebarOpen ? 'rotate(180deg)' : 'rotate(0)',
-                  transition: 'transform 0.5s',
                   cursor: 'pointer',
                   marginRight: '10px',
                   width: '14px',
@@ -105,10 +101,8 @@ export const DefaultAppBar: React.FC = () => {
             ) : (
               <Menu
                 color="primary"
-                onClick={toggleSidebar}
+                onClick={isMobile ? showNavbar : toggleSidebar}
                 sx={{
-                  transform: !isSidebarOpen ? 'rotate(180deg)' : 'rotate(0)',
-                  transition: 'transform 0.5s',
                   cursor: 'pointer',
                   marginRight: '10px',
                   width: '14px',

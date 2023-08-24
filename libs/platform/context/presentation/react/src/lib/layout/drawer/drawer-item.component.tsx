@@ -1,35 +1,22 @@
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
 import {
-  Card,
   ListItemButton,
   ListItemIcon,
-  ListItemText,
 } from '@mui/material';
-import { IconNames } from '@saas-quick-start/platform/design/assets/constants';
 import { getIconByName } from '@saas-quick-start/platform/design/assets/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { LayoutContext } from '../context';
 import { useTranslations } from 'next-intl';
+import { UserMenuEntityInterface } from '@saas-quick-start/domain/user';
 
-interface ItemNav {
-  code: string;
-  icon?: string;
-  link?: string;
-  parentId?: string;
-  children?: ItemNav[];
-  exact?: boolean;
-  child?: boolean;
-}
 
-export const DrawerItemComponent: React.FC<ItemNav> = (item) => {
+export const DrawerItemComponent: React.FC<UserMenuEntityInterface> = (item) => {
   const { push, pathname } = useRouter();
   const { isSidebarOpen } = React.useContext(LayoutContext);
   const translation = useTranslations('menu');
 
   const IconComponent = item.icon
-    ? getIconByName(item.icon as IconNames)
+    ? getIconByName(item.icon)
     : null;
   const isActive = item.link && pathname.startsWith(item.link);
 
@@ -41,6 +28,7 @@ export const DrawerItemComponent: React.FC<ItemNav> = (item) => {
         paddingY: 1,
         marginBottom: 1,
         borderRadius: '0.5rem',
+        backgroundColor: (t) => isActive ? t.palette.primary.contrastText : undefined,
         transition:
           'width 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
         boxShadow: isActive

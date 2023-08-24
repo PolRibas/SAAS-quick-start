@@ -50,7 +50,8 @@ export const DynamicTableComponent: React.FC = () => {
   return (
     <TableContainer>
       {loadingState && <LinearProgress />}
-      <Table>
+      <Table
+      >
         <TableHead>
           <TableRow>
             {filteredHeaders.length ? (

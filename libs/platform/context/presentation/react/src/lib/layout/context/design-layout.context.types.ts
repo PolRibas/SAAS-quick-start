@@ -1,4 +1,4 @@
-import { UserMenuEntityInterface } from "@sports-mind/domain/user";
+import { UserMenuEntityInterface } from "@saas-quick-start/domain/user";
 
 export interface LayoutState {
   isSidebarOpen: boolean;

@@ -1,72 +1,12 @@
 import * as React from 'react';
-import { useRouter } from 'next/router';
-import { useTranslations } from 'next-intl';
-import {
-  Box,
-  Drawer,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-  Collapse,
-  useTheme,
-  Divider,
-} from '@mui/material';
-import { getIconByName } from '@saas-quick-start/platform/design/assets/react';
-import { IconNames } from '@saas-quick-start/platform/design/assets/constants';
+import { Box, Drawer, List, Toolbar, Divider } from '@mui/material';
 import { LayoutContext } from '../context';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
 import { DrawerItemComponent } from './drawer-item.component';
-
-interface ItemNav {
-  code: string;
-  icon?: string;
-  link?: string;
-  parentId?: string;
-  children?: ItemNav[];
-  exact?: boolean;
-  child?: boolean;
-}
+import { UserMenuEntityInterface } from '@saas-quick-start/domain/user';
 
 export const DefaultAppDrawer: React.FC = () => {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [menuOpen, setMenuOpen] = React.useState<{ [key: string]: boolean }>(
-    {}
-  );
-  const { userMenu, drawerWidth, isSidebarOpen } =
+  const { userMenu, drawerWidth, isNavbarVisible, hideNavbar } =
     React.useContext(LayoutContext);
-  const translation = useTranslations('menu');
-  const { push, pathname } = useRouter();
-  const theme = useTheme();
-
-  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
-
-  const DrawerMenu = React.useMemo(() => {
-    return userMenu.reduce((acc: ItemNav[], item: ItemNav) => {
-      if (item.parentId) {
-        const parent = acc.find((i) => i.code === item.parentId);
-        if (parent) {
-          parent.children = parent.children || [];
-          parent.children.push(item);
-        } else {
-          acc.push({
-            code: item.parentId,
-            children: [item],
-          });
-        }
-      } else {
-        const findItem = acc.find((i) => i.code === item.code);
-        if (findItem) {
-          Object.assign(findItem, item);
-        } else {
-          acc.push(item);
-        }
-      }
-      return acc;
-    }, []);
-  }, [userMenu]);
 
   const drawerContent = (
     <Box
@@ -94,11 +34,10 @@ export const DefaultAppDrawer: React.FC = () => {
           }}
         />
         <List sx={{ width: 'auto', transition: '0.5s' }}>
-          {DrawerMenu.map((item: ItemNav, index: number) => (
+          {userMenu.map((item: UserMenuEntityInterface, index: number) => (
             <React.Fragment key={`${item.code}_drawer_${index}`}>
               <DrawerItemComponent
                 {...item}
-                exact={true}
                 key={item.code + 'drawer' + index}
               />
             </React.Fragment>
@@ -120,18 +59,14 @@ export const DefaultAppDrawer: React.FC = () => {
     >
       <Drawer
         variant="temporary"
-        open={mobileOpen}
-        onClose={handleDrawerToggle}
-        transitionDuration={0.5}
-        ModalProps={{ keepMounted: true }}
+        open={isNavbarVisible}
+        onClose={hideNavbar}
         sx={{
           display: { xs: 'block', sm: 'none' },
-          background: 'blue',
           '& .MuiDrawer-paper': {
-            boxSizing: 'border-box',
             width: drawerWidth,
-            transition: '0.5s',
-            background: theme.palette.primary.main,
+            paddingX: '10px',
+            background: (t) => t.palette.grey[100],
           },
         }}
       >

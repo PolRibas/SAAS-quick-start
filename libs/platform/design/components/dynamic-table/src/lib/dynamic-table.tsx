@@ -20,10 +20,16 @@ export const DynamicTable: React.FC<{
       baseUrl={baseUrl}
       token={token}
     >
-      <DynamicTableFiltersComponent filterSlot={filterSlot} />
-      <DynamicTableComponent />
-      <DynamicTablePaginationComponent />
-      <DynamicTableItemComponent />
+      <div
+        style={{
+          maxWidth: '82vw',
+        }}
+      >
+        <DynamicTableFiltersComponent filterSlot={filterSlot} />
+        <DynamicTableComponent />
+        <DynamicTablePaginationComponent />
+        <DynamicTableItemComponent />
+      </div>
     </DataTableProvider>
   );
 };

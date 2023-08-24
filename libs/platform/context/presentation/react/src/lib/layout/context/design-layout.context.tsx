@@ -8,7 +8,7 @@ import { useSize } from '@saas-quick-start/common/hooks';
 
 const defaultLayoutState: LayoutState = {
   isSidebarOpen: true,
-  isNavbarVisible: true,
+  isNavbarVisible: false,
   isDesktop: true,
   isMobile: false,
   isTablet: false,
