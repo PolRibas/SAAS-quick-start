@@ -17,7 +17,6 @@ import { AuthService } from '@saas-quick-start/platform/modules/security';
 import { ContextCompanyPresenter, UserMenuPresenter } from '@saas-quick-start/platform/context/presenters';
 import { messagesMenuCodes } from '@saas-quick-start/platform/messages';
 import { CompanyPermissionsList } from '@saas-quick-start/domain/company';
-import { IconNames } from '@saas-quick-start/platform/design/assets/constants';
 
 
 @Injectable()
@@ -214,6 +213,18 @@ export class ContextServices extends AbstractCrudService<
         link: `/table`,
         icon: 'ManageSearch',
       }),
+      new UserMenuEntity({
+        code: messagesMenuCodes.analytics,
+        order: 9,
+        link: `/analytics`,
+        icon: 'Analytics',
+      }),
+      new UserMenuEntity({
+        code: messagesMenuCodes.settings,
+        order: 10,
+        link: `/settings`,
+        icon: 'Settings',
+      }),
     ]
     if (user.admin) {
       menus.push(
@@ -244,13 +255,25 @@ export class ContextServices extends AbstractCrudService<
         icon: 'Settings',
       }),
     ]
-    if (company.permissions.includes(CompanyPermissionsList.readCompanyAnalytics)) {
+    if (company.permissions.includes(CompanyPermissionsList.readCompanyAnalytics) ||
+      company.permissions.includes(CompanyPermissionsList.root)) {
       menus.push(
         new UserMenuEntity({
           code: messagesMenuCodes.analytics,
           order: 9,
           link: `/analytics`,
           icon: 'Analytics',
+        })
+      )
+    }
+    if (company.permissions.includes(CompanyPermissionsList.readCompanyInfrastructure) ||
+      company.permissions.includes(CompanyPermissionsList.root)) {
+      menus.push(
+        new UserMenuEntity({
+          code: messagesMenuCodes.infrastructure,
+          order: 8,
+          link: `/infrastructure`,
+          icon: 'Tour',
         })
       )
     }

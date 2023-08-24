@@ -15,6 +15,11 @@ export enum CompanyPermissionsList {
   readCompanyUser = 'read-company-user',
   deleteCompanyUser = 'delete-company-user',
 
+  createCompanyInfrastructure = 'create-company-infrastructure',
+  updateCompanyInfrastructure = 'update-company-infrastructure',
+  readCompanyInfrastructure = 'read-company-infrastructure',
+  deleteCompanyInfrastructure = 'delete-company-infrastructure',
+
   readCompanyAnalytics = 'read-company-analytics',
   readCompanyPerformance = 'read-company-performance',
 }

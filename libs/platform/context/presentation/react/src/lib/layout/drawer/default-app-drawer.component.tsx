@@ -34,14 +34,16 @@ export const DefaultAppDrawer: React.FC = () => {
           }}
         />
         <List sx={{ width: 'auto', transition: '0.5s' }}>
-          {userMenu.map((item: UserMenuEntityInterface, index: number) => (
-            <React.Fragment key={`${item.code}_drawer_${index}`}>
-              <DrawerItemComponent
-                {...item}
-                key={item.code + 'drawer' + index}
-              />
-            </React.Fragment>
-          ))}
+          {userMenu
+            .sort((a, b) => (a.order || 0) - (b.order || 0))
+            .map((item: UserMenuEntityInterface, index: number) => (
+              <React.Fragment key={`${item.code}_drawer_${index}`}>
+                <DrawerItemComponent
+                  {...item}
+                  key={item.code + 'drawer' + index}
+                />
+              </React.Fragment>
+            ))}
         </List>
       </div>
     </Box>
